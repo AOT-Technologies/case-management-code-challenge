@@ -4,6 +4,7 @@ export interface State {
   app: Application;
   documents: Document;
   cases: Cases;
+  contacts: Contacts;
   constants: Constants;
   lob: Lob;
   tasks: Tasks;
@@ -53,7 +54,30 @@ export interface SelectedCase {
   notes: any[];
 }
 
+export interface SelectedContact {
+  id: number;
+  name: string;
+  desc: string;
+  statusid: number;
+  lobDetails: any;
+  documents: any[];
+  totalDocCount: number;
+  typeid: number;
+  lobcaseid: number;
+  tasks: any[];
+  additionalFields: any;
+  notes: any[];
+}
+
 export interface CaseList {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+}
+[];
+
+export interface ContactList {
   id: number;
   name: string;
   description: string;
@@ -72,6 +96,15 @@ export interface Cases {
 export interface USerDetails {
   email: string;
   userName: string;
+}
+
+export interface Contactss {
+  selectedContacts: SelectedContact;
+  contactList: ContactList[];
+  totalContactCount: number;
+  pageSelected: number;
+  searchContactResult: {};
+  selectedContactFormType: undefined;
 }
 
 export interface store {

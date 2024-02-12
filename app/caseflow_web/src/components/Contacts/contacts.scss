@@ -1,0 +1,25 @@
+@import "../../styles.scss";
+
+.header-search {
+  display: flex;
+  background-color: #ececec;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  .title {
+    padding-left: 4vw;
+    padding-left: 3.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-align: right;
+    align-items: center;
+    font-size: 2.5rem;
+  }
+
+  .search {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 3vw;
+  }
+}

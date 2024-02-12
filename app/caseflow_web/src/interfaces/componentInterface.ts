@@ -18,6 +18,10 @@ export interface RecentCase {
   case: Case;
 }
 
+export interface RecentContact {
+  contact: Contact;
+}
+
 export interface CustomContent {
   caseCategory: string;
   district: string;
@@ -47,12 +51,24 @@ export interface caseListprops {
   config: PropsConfig;
 }
 
+export interface contactListprops {
+  config: PropsConfig;
+}
+
 export interface Case {
   id: number;
   name: string;
   description: string;
   status: string;
 }
+
+export interface Contact {
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+}
+
 
 export interface BreadCrumbs {
   link: string;
