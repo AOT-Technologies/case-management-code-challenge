@@ -14,6 +14,8 @@ import { KeycloakConnectModule } from 'nest-keycloak-connect';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CaseflowLobModule } from './caseflow_lob/caseflow_lob.module';
+import { CaseflowContactsModule } from './caseflow_contacts/caseflow_contacts.module';
+import { CaseflowIndividualsModule } from './caseflow_individuals/caseflow_individuals.module';
 
 const keyCloakOptionsProvider = {
   provide: 'keyCloakDataProvider',
@@ -55,6 +57,8 @@ const keyCloakOptionsProvider = {
       }),
     }),
     CaseflowLobModule,
+    CaseflowContactsModule,
+    CaseflowIndividualsModule
   ],
   controllers: [AppController],
   providers: [AppService],

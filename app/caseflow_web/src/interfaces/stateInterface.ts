@@ -7,6 +7,8 @@ export interface State {
   constants: Constants;
   lob: Lob;
   tasks: Tasks;
+  contacts: Contacts;
+  individuals: Individuals;
 }
 
 export type AuthState = {
@@ -53,11 +55,49 @@ export interface SelectedCase {
   notes: any[];
 }
 
+export interface SelectedContacts {
+  id: number;
+  firstname: string;
+  lastname: string;
+  phonenumber: number;
+  email: string;
+  dateofbirth: Date;
+  address: string;
+  createdat: Date;
+}
+
+export interface SelectedIndividuals {
+  id: number;
+  firstname: string;
+  lastname: string;
+  phonenumber: number;
+  email: string;
+  dateofbirth: Date;
+  address: string;
+  createdat: Date;
+}
+
 export interface CaseList {
   id: number;
   name: string;
   description: string;
   status: string;
+}
+[];
+
+export interface ContactList {
+  id: number;
+  email: string;
+  firstname: string;
+  lastname: string;
+}
+[];
+
+export interface IndividualList {
+  id: number;
+  email: string;
+  firstname: string;
+  lastname: string;
 }
 [];
 
@@ -69,6 +109,23 @@ export interface Cases {
   searchCaseResult: {};
   selectedCaseFormType: undefined;
 }
+
+export interface Contacts {
+  selectedContact: SelectedContacts;
+  contactList: ContactList[];
+  totalContactCount: number;
+  pageSelected: number;
+  searchContactResult: {};
+}
+
+export interface Individuals {
+  selectedIndividual: SelectedIndividuals;
+  IndividualList: IndividualList[];
+  totalIndividualCount: number;
+  pageSelected: number;
+  searchIndividualResult: {};
+}
+
 export interface USerDetails {
   email: string;
   userName: string;
@@ -117,7 +174,7 @@ export interface LobList {
   id: number;
   sumAssured: number;
   policyNumber: string;
-  createdDate: Date;
+  createdat: Date;
   isActive: string;
   policyExpiryDate: Date;
   policyEffectiveDate: Date;

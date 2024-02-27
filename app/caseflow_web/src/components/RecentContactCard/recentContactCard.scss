@@ -1,0 +1,19 @@
+@import "../../styles.scss";
+
+.recent-contact-card-status {
+  position: relative;
+  left: 1rem;
+  display: inline-block;
+  height: 25px;
+  background-color: #ebebeb;
+  border-radius: 4px;
+  opacity: 1;
+  padding: 0.25rem 0.75rem;
+  .recent-contact-card-status-text {
+    font: normal normal normal 12px/18px Poppins;
+    letter-spacing: 0px;
+    color: #404040;
+    opacity: 1;
+    text-align: center;
+  }
+}

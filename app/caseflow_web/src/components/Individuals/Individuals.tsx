@@ -3,26 +3,35 @@ import Search from "../Search/Search";
 import "./individuals.scss";
 import IndividualList from "../IndividualList/IndividualList";
 import { useSelector, useDispatch } from "react-redux";
-import { State } from "../../interfaces/stateInterface";
-//import { searchContacts } from "../../services/ContactService";
-// import {
-//   setTotalContactCount,
-//   setsearchContactResult,
-// } from "../../reducers/newContactReducer";
-import { Button, FormControl, InputLabel, Select, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { createNewIndividual, getIndividualsData } from "../../services/IndividualService";
+import {
+  setTotalIndividualCount,
+  setsearchIndividualResult,
+} from "../../reducers/newIndividualReducer";
+import { Button, FormControl, TextField, Typography } from "@mui/material";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
-import { useNavigate } from "react-router";
 import CustomizedDialog from "../Dialog/Dialog";
-const individualsListProps = {
+import { State } from "../../interfaces/stateInterface";
+import { toast } from "react-toastify";
+const individualListProps = {
   title: GENERIC_NAME,
   count: 5,
   isShowSort: false,
   pagination: true,
 };
 const Individuals = () => {
-  const [filteredIndividualDetails, setFilteredIndividualDetails] = useState([]);
-  const [searchField, setSearchField] = useState("");
-  const [searchColumn, setSearchColumn] = useState("name");
+  
+  const navigate = useNavigate();
+  const [filteredIndividualsDetails, setFilteredIndividualsDetails] = useState([]);
+  const [searchField, setSearchField] = useState();
+  const [firstname, setFirstname]:any = useState();
+  const [lastname, setLastname]:any = useState();
+  const [phonenumber, setPhonenumber]:any = useState();
+  const [email, setEmail]:any = useState();
+  const [dateofbirth, setDateofbirth]:any = useState();
+  const [address, setAddress]:any = useState();
+  const [searchColumn, setSearchColumn] = useState("firstname");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
   
   const [isCreateIndividualOpen, setOpenCreateIndividualPopup] = useState(false);
@@ -32,73 +41,81 @@ const Individuals = () => {
   });
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const selectedPage = 1;
-//   const searchResults = useSelector(
-//     (state: State) => state.individuals.searchCndividualResult
-//   );
+  
+  const selectedPage = useSelector((state: State) => state.individuals.pageSelected);
+  const searchResults = useSelector(
+    (state: State) => state.individuals.searchIndividualResult
+  );
 
-//   const filterDocumentDetails = async () => {
-//     let searchResult = await searchIndividuals(
-//       searchField,
-//       searchColumn,
-//       selectedPage,
-//       sortSetting.orderBy,
-//       sortSetting.orderType,
-//       false,
-//       null,
-//       null
-//     );
-//     let searchResultIndividuals = searchResult.Individuals?.map((element) => {
-//       return { ...element, status: "Open" };
-//     });
+  const filterDocumentDetails = async () => {
+    let searchResult = await getIndividualsData(
+      selectedPage,
+      searchField,
+      searchColumn,
+      null,
+      null
+    );
+    let searchResultIndividuals = searchResult?.map((element) => {
+      return { ...element, status: "Open" };
+    });
 
-//     if (searchResultIndividuals) setFilteredIndividualDetails(searchResultIndividuals);
-//     dispatch(setTotalIndividualsCount(searchResult.totalCount));
-//   };
+    if (searchResultIndividuals) setFilteredIndividualsDetails(searchResultIndividuals);
+    dispatch(setTotalIndividualCount(searchResult?.totalCount));
+  };
 
-//   const searchIndividualssDetails = async () => {
-//     let searchResult = await searchIndividuals(
-//       searchField,
-//       searchColumn,
-//       selectedPage,
-//       sortSetting.orderBy,
-//       sortSetting.orderType,
-//       true,
-//       null,
-//       null
-//     );
-//     let searchResultIndividuals = searchResult.Individuals?.map((element) => {
-//       return {
-//         title: element.id + " - " + element.name,
-//         content: element.desc,
-//         subtitle: GENERIC_NAME,
-//         link: "/private/individuals/" + element.id + "/details",
-//         imgIcon: require("../../assets/IndividualsIcon.png"),
-//       };
-//     });
+  
+  const createIndividual = async () =>{
+     
+      let response = await createNewIndividual({ firstname,
+        lastname, phonenumber, email, dateofbirth, address
+      });
+      if(response.id){
+        setOpenCreateIndividualPopup(false);
+        await toast.success("Individual created succesfully!");
+        navigate("/private/individuals/" + response.id + "/details");      }
+      else{
+        toast.error("Failed to  add the note. Please try again!");
+      }
+  }
+  const searchIndividualsDetails = async () => {
+    let searchResult = await getIndividualsData(
+      selectedPage,
+      searchField,
+      searchColumn,
+      null,
+      null
+    );
+    let searchResultIndividuals = searchResult?.map((element) => {
+      return {
+        title: element.id + " - " + element.firstname,
+        content: element.firstname,
+        subtitle: GENERIC_NAME,
+        link: "/private/individuals/" + element.id + "/details",
+        imgIcon: require("../../assets/ContactsIcon.png"),
+      };
+    });
 
-//     if (searchResultIndividuals) {
-//       console.log({
-//         searchResultIndividuals: searchResultIndividuals,
-//         totalCount: searchResult.totalCount,
-//       });
-//       dispatch(
-//         setsearchIndividualResult({
-//           searchResult: searchResultIndividuals,
-//           totalCount: searchResult.totalCount,
-//         })
-//       );
-//     }
-//   };
+    if (searchResultIndividuals) {
+      console.log({
+        searchResultIndividuals: searchResultIndividuals,
+        totalCount: searchResult?.totalCount,
+      });
+      dispatch(
+        setsearchIndividualResult({
+          searchResult: searchResultIndividuals,
+          totalCount: searchResult?.totalCount,
+        })
+      );
+    }
+  };
 
-//   useEffect(() => {
-//     filterDocumentDetails();
-//   }, [selectedPage, sortSetting]);
+  useEffect(() => {
+    filterDocumentDetails();
+  }, [selectedPage, sortSetting]);
 
-//   useEffect(() => {
-//     searchIndividualsDetails();
-//   }, [searchField, searchColumn]);
+  useEffect(() => {
+    searchIndividualsDetails();
+  }, [searchField, searchColumn]);
 
 const handleCreatNewIndividual = ()=> {
     setOpenCreateIndividualPopup(true);
@@ -122,37 +139,46 @@ const handleCreatNewIndividual = ()=> {
                 <Typography variant="subtitle1" >First Name</Typography>
                 <TextField
                     id="outlined-multiline-flexible"
-                    sx={{marginRight: 1}}
+                    sx={{ marginRight: 1, width:160}}
+                    onChange={(e)=> setFirstname(e.target.value)}
                     />
             </div>
             <div>
-                <Typography variant="subtitle1">Last Name</Typography>
+                <Typography variant="subtitle1" >Last Name</Typography>
                 <TextField
                     id="outlined-multiline-flexible"
-                    sx={{marginRight: 1}}
+                    sx={{marginRight: 1, width:160}}
+                    onChange={(e)=> setLastname(e.target.value)}
                     />
             </div>
             <div>
                 <Typography variant="subtitle1">Phone Number</Typography>
                 <TextField
-                    id="outlined-multiline-flexible"/>
+                    id="outlined-multiline-flexible"
+                    sx={{marginRight: 1, width:160}}
+                    onChange={(e)=> setPhonenumber(e.target.value)}
+                    />
             </div>
             <div>
-                <Typography variant="subtitle1">email</Typography>
+                <Typography variant="subtitle1">Email</Typography>
                 <TextField
-                    id="outlined-multiline-flexible"/>
+                    id="outlined-multiline-flexible"
+                    sx={{marginRight: 1, width:160}}
+                    onChange={(e)=> setEmail(e.target.value)}/>
             </div>
             <div>
                 <Typography variant="subtitle1">Address</Typography>
                 <TextField
                     id="outlined-multiline-flexible"
-                    sx={{marginRight: 1}}
+                    sx={{marginRight: 1, width:160}}
+                    onChange={(e)=> setAddress(e.target.value)}
                     />
             </div>
             <div>
                 <Typography variant="subtitle1">Date Of Birth</Typography>
-                <TextField
-                    id="outlined-multiline-flexible"/>
+                <TextField type="date"
+                    id="outlined-multiline-flexible" sx={{marginRight: 1}}
+                    onChange={(e)=> setDateofbirth(e.target.value)}/>
             </div>
         </div>
         
@@ -164,7 +190,7 @@ const handleCreatNewIndividual = ()=> {
                 backgroundColor: "primary.main",
                 borderColor: "primary.main",
               }}
-            //   onClick={submitNote}
+              onClick={createIndividual}
             >
               Save
             </Button>
@@ -181,7 +207,7 @@ const handleCreatNewIndividual = ()=> {
             setSearchField={setSearchField}
             dropDownArray={dropDownArray}
             setSearchColumn={setSearchColumn}
-            dropDownValues={{}}
+            dropDownValues={searchResults}
           ></Search>
         </div>
         <div className="search">
@@ -202,12 +228,12 @@ const handleCreatNewIndividual = ()=> {
             
         </div>
       </div>
-      <div className="recent-individual">
+      <div className="recent-individuals">
         <IndividualList
           sortSetting={sortSetting}
           setSortSetting={setSortSetting}
           config={{}}
-          allRecentIndividuals={filteredIndividualDetails}
+          allRecentIndividuals={filteredIndividualsDetails}
         ></IndividualList>
       </div>
     </section>

@@ -3,16 +3,17 @@ import Search from "../Search/Search";
 import "./contacts.scss";
 import ContactList from "../ContactList/ContactList";
 import { useSelector, useDispatch } from "react-redux";
-import { State } from "../../interfaces/stateInterface";
-//import { searchContacts } from "../../services/ContactService";
-// import {
-//   setTotalContactCount,
-//   setsearchContactResult,
-// } from "../../reducers/newContactReducer";
-import { Button, FormControl, InputLabel, Select, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { createNewContact, getContactsData } from "../../services/ContactService";
+import {
+  setTotalContactCount,
+  setsearchContactResult,
+} from "../../reducers/newContactReducer";
+import { Button, FormControl, TextField, Typography } from "@mui/material";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
-import { useNavigate } from "react-router";
 import CustomizedDialog from "../Dialog/Dialog";
+import { State } from "../../interfaces/stateInterface";
+import { toast } from "react-toastify";
 const contactListProps = {
   title: GENERIC_NAME,
   count: 5,
@@ -20,9 +21,17 @@ const contactListProps = {
   pagination: true,
 };
 const Contacts = () => {
+  
+  const navigate = useNavigate();
   const [filteredContactDetails, setFilteredContactDetails] = useState([]);
-  const [searchField, setSearchField] = useState("");
-  const [searchColumn, setSearchColumn] = useState("name");
+  const [searchField, setSearchField] = useState();
+  const [firstname, setFirstname]:any = useState();
+  const [lastname, setLastname]:any = useState();
+  const [phonenumber, setPhonenumber]:any = useState();
+  const [email, setEmail]:any = useState();
+  const [dateofbirth, setDateofbirth]:any = useState();
+  const [address, setAddress]:any = useState();
+  const [searchColumn, setSearchColumn] = useState("firstname");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
   
   const [isCreateContactOpen, setOpenCreateContactPopup] = useState(false);
@@ -32,73 +41,81 @@ const Contacts = () => {
   });
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const selectedPage = 1;
-//   const searchResults = useSelector(
-//     (state: State) => state.contacts.searchContactResult
-//   );
+  
+  const selectedPage = useSelector((state: State) => state.contacts.pageSelected);
+  const searchResults = useSelector(
+    (state: State) => state.contacts.searchContactResult
+  );
 
-//   const filterDocumentDetails = async () => {
-//     let searchResult = await searchContacts(
-//       searchField,
-//       searchColumn,
-//       selectedPage,
-//       sortSetting.orderBy,
-//       sortSetting.orderType,
-//       false,
-//       null,
-//       null
-//     );
-//     let searchResultContacts = searchResult.Contacts?.map((element) => {
-//       return { ...element, status: "Open" };
-//     });
+  const filterDocumentDetails = async () => {
+    let searchResult = await getContactsData(
+      selectedPage,
+      searchField,
+      searchColumn,
+      null,
+      null
+    );
+    let searchResultContacts = searchResult?.map((element) => {
+      return { ...element, status: "Open" };
+    });
 
-//     if (searchResultContacts) setFilteredContactDetails(searchResultContacts);
-//     dispatch(setTotalContactCount(searchResult.totalCount));
-//   };
+    if (searchResultContacts) setFilteredContactDetails(searchResultContacts);
+    dispatch(setTotalContactCount(searchResult?.totalCount));
+  };
 
-//   const searchContactsDetails = async () => {
-//     let searchResult = await searchContacts(
-//       searchField,
-//       searchColumn,
-//       selectedPage,
-//       sortSetting.orderBy,
-//       sortSetting.orderType,
-//       true,
-//       null,
-//       null
-//     );
-//     let searchResultContacts = searchResult.Contacts?.map((element) => {
-//       return {
-//         title: element.id + " - " + element.name,
-//         content: element.desc,
-//         subtitle: GENERIC_NAME,
-//         link: "/private/contacts/" + element.id + "/details",
-//         imgIcon: require("../../assets/ContactsIcon.png"),
-//       };
-//     });
+  
+  const createContact = async () =>{
+     
+      let response = await createNewContact({ firstname,
+        lastname, phonenumber, email, dateofbirth, address
+      });
+      if(response.id){
+        setOpenCreateContactPopup(false);
+        await toast.success("Contact created succesfully!");
+        navigate("/private/contacts/" + response.id + "/details");      }
+      else{
+        toast.error("Failed to  add the note. Please try again!");
+      }
+  }
+  const searchContactsDetails = async () => {
+    let searchResult = await getContactsData(
+      selectedPage,
+      searchField,
+      searchColumn,
+      null,
+      null
+    );
+    let searchResultContacts = searchResult?.map((element) => {
+      return {
+        title: element.id + " - " + element.firstname,
+        content: element.firstname,
+        subtitle: GENERIC_NAME,
+        link: "/private/contacts/" + element.id + "/details",
+        imgIcon: require("../../assets/ContactsIcon.png"),
+      };
+    });
 
-//     if (searchResultContacts) {
-//       console.log({
-//         searchResultContacts: searchResultContacts,
-//         totalCount: searchResult.totalCount,
-//       });
-//       dispatch(
-//         setsearchContactResult({
-//           searchResult: searchResultContacts,
-//           totalCount: searchResult.totalCount,
-//         })
-//       );
-//     }
-//   };
+    if (searchResultContacts) {
+      console.log({
+        searchResultContacts: searchResultContacts,
+        totalCount: searchResult?.totalCount,
+      });
+      dispatch(
+        setsearchContactResult({
+          searchResult: searchResultContacts,
+          totalCount: searchResult?.totalCount,
+        })
+      );
+    }
+  };
 
-//   useEffect(() => {
-//     filterDocumentDetails();
-//   }, [selectedPage, sortSetting]);
+  useEffect(() => {
+    filterDocumentDetails();
+  }, [selectedPage, sortSetting]);
 
-//   useEffect(() => {
-//     searchContactsDetails();
-//   }, [searchField, searchColumn]);
+  useEffect(() => {
+    searchContactsDetails();
+  }, [searchField, searchColumn]);
 
 const handleCreatNewContact = ()=> {
     setOpenCreateContactPopup(true);
@@ -123,6 +140,7 @@ const handleCreatNewContact = ()=> {
                 <TextField
                     id="outlined-multiline-flexible"
                     sx={{ marginRight: 1, width:160}}
+                    onChange={(e)=> setFirstname(e.target.value)}
                     />
             </div>
             <div>
@@ -130,6 +148,7 @@ const handleCreatNewContact = ()=> {
                 <TextField
                     id="outlined-multiline-flexible"
                     sx={{marginRight: 1}}
+                    onChange={(e)=> setLastname(e.target.value)}
                     />
             </div>
             <div>
@@ -137,25 +156,29 @@ const handleCreatNewContact = ()=> {
                 <TextField
                     id="outlined-multiline-flexible"
                     sx={{marginRight: 1}}
+                    onChange={(e)=> setPhonenumber(e.target.value)}
                     />
             </div>
             <div>
                 <Typography variant="subtitle1">Email</Typography>
                 <TextField
                     id="outlined-multiline-flexible"
-                    sx={{marginRight: 1}}/>
+                    sx={{marginRight: 1}}
+                    onChange={(e)=> setEmail(e.target.value)}/>
             </div>
             <div>
                 <Typography variant="subtitle1">Address</Typography>
                 <TextField
                     id="outlined-multiline-flexible"
                     sx={{marginRight: 1}}
+                    onChange={(e)=> setAddress(e.target.value)}
                     />
             </div>
             <div>
                 <Typography variant="subtitle1">Date Of Birth</Typography>
                 <TextField type="date"
-                    id="outlined-multiline-flexible" sx={{marginRight: 1}}/>
+                    id="outlined-multiline-flexible" sx={{marginRight: 1}}
+                    onChange={(e)=> setDateofbirth(e.target.value)}/>
             </div>
             <div>
                 <Typography variant="subtitle1">Individual Name</Typography>
@@ -177,7 +200,7 @@ const handleCreatNewContact = ()=> {
                 backgroundColor: "primary.main",
                 borderColor: "primary.main",
               }}
-            //   onClick={submitNote}
+              onClick={createContact}
             >
               Save
             </Button>
@@ -194,7 +217,7 @@ const handleCreatNewContact = ()=> {
             setSearchField={setSearchField}
             dropDownArray={dropDownArray}
             setSearchColumn={setSearchColumn}
-            dropDownValues={{}}
+            dropDownValues={searchResults}
           ></Search>
         </div>
         <div className="search">

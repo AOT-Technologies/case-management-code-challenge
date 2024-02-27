@@ -54,6 +54,20 @@ export interface Case {
   status: string;
 }
 
+export interface Contact {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+}
+
+export interface Individual {
+  id: number;
+  firstname: string;
+  lastname: string;
+  email: string;
+}
+
 export interface BreadCrumbs {
   link: string;
   text: string;

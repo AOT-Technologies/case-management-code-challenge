@@ -137,7 +137,7 @@ export default function MiniDrawer() {
     { key: 3, text: GENERIC_NAME, path: "/private/cases" },
     { key: 4, text: "Documents", path: "/private/documents" },
     { key: 5, text: "Reports", path: FORMSFLOW_WEB_URL + "/insights" },
-    { key: 6, text: "Individual", path: "/private/individual" },
+    { key: 6, text: "Individual", path: "/private/individuals" },
     { key: 7, text: "Contacts", path: "/private/contacts" },
   ];
   const { pathname } = useLocation();
