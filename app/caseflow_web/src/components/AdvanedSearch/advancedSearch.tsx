@@ -9,7 +9,15 @@ import {
   OutlinedInput,
   TextField,
   Typography,
+  
 } from "@mui/material";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import React, { useEffect, useState } from "react";
 import "./advancedSearch.scss";
 import SearchIcon from "@mui/icons-material/Search";
@@ -159,6 +167,7 @@ export default function AdvancedSearch() {
     contactSearch,
     toDateForSearch,
   ]);
+  
 
   return (
     <>
@@ -308,50 +317,95 @@ export default function AdvancedSearch() {
               </Button>
             </Box>
           </FormControl>
-          <Box sx={{ overflow: "auto", height: "55vh" }}>
-            {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => (
-              <Grid container key={eachValue.title}>
-                <Grid item xs={0.5} sx={{ pt: "5vh" }}>
+          {/* <div className="CasesTableHeader">
+            <table>
+                <tr>
                   <img
                     alt="Tasksicon"
-                    src={eachValue.imgIcon}
+                    src="../../assets/CasesIcon.png"
                     style={{ height: "1rem" }}
                   ></img>
-                </Grid>
-                <Grid item xs={11}>
-                  <div>
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        pt: 4,
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                      }}
-                      color="#002EFF"
-                      onClick={() => {
-                        navigate(eachValue.link);
-                      }}
+                </tr>
+          {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => {
+            return (
+                <tr key="CasesTableContent">
+                    <td>{eachValue.title}</td>
+                    <td>{eachValue.subtitle}</td>
+                    <td>{eachValue.content}</td>
+                    <td>{eachValue.link}</td>
+                </tr>
+            )
+          }):}
+            </table>
+        </div> */}
+          <Box sx={{ overflow: "auto", height: "55vh" }}>
+          <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Cases (100g serving)</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => (
+                    <TableRow
+                      key={row.name}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      {eachValue.title}
-                    </Typography>
-                    <Typography variant="caption" sx={{ fontSize: 8 }}>
-                      {eachValue.subtitle}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{ fontSize: 14 }}
-                      gutterBottom
-                    >
-                      {eachValue.content}
-                    </Typography>
-                  </div>
-                </Grid>
-              </Grid>
-            )):
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="right">{eachValue.title}</TableCell>
+                      <TableCell align="right">{eachValue.subtitle}</TableCell>
+                      <TableCell align="right">{eachValue.content}</TableCell>
+                    </TableRow>
+                  )):}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            {/* {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => (
+              // <Grid container key={eachValue.title}>
+              //   <Grid item xs={0.5} sx={{ pt: "5vh" }}>
+              //     <img
+              //       alt="Tasksicon"
+              //       src={eachValue.imgIcon}
+              //       style={{ height: "1rem" }}
+              //     ></img>
+              //   </Grid>
+              //   <Grid item xs={11}>
+              //     <div>
+              //       <Typography
+              //         variant="body1"
+              //         sx={{
+              //           pt: 4,
+              //           textDecoration: "underline",
+              //           cursor: "pointer",
+              //         }}
+              //         color="#002EFF"
+              //         onClick={() => {
+              //           navigate(eachValue.link);
+              //         }}
+              //       >
+              //         {eachValue.title}
+              //       </Typography>
+              //       <Typography variant="caption" sx={{ fontSize: 8 }}>
+              //         {eachValue.subtitle}
+              //       </Typography>
+              //       <Typography
+              //         variant="body1"
+              //         sx={{ fontSize: 14 }}
+              //         gutterBottom
+              //       >
+              //         {eachValue.content}
+              //       </Typography>
+              //     </div>
+              //   </Grid>
+              // </Grid>
+            )): */}
             <Typography variant="body1" className="no-details-found">
             No Result Found!
           </Typography>
-          }
+          {/* } */}
           </Box>
         </div>
 
