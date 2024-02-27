@@ -37,6 +37,8 @@ export default function AdvancedSearch() {
   const [documentSearch, setDocumentsearch] = useState(false);
   const [caseSearch, setCasesearch] = useState(false);
   const [lobSearch, setLobsearch] = useState(false);
+  const [individualSearch, setIndividualsearch] = useState(false);
+  const [contactSearch, setContactsearch] = useState(false);
   const [fromDateForSearch, setFromDateForSearch] = useState(null);
   const [toDateForSearch, setToDateForSearch] = useState(null);
   const [showDate, setShowDate] = useState(false);
@@ -88,7 +90,26 @@ export default function AdvancedSearch() {
             });
           });
         }),
-      (allSearch || lobSearch) &&
+      (allSearch || individualSearch) &&
+        getLobData(
+          1,
+          searchField,
+          "policyNumber",
+          fromDateForSearch,
+          toDateForSearch
+        ).then((searchLobResult) => {
+          totalCount = totalCount + searchLobResult?.totalCount;
+          searchLobResult?.CaseflowLob.map((element) => {
+            result.push({
+              title: element.id + " - " + element.policyNumber,
+              content: moment(element.createdDate).format("MMMM Do, YYYY"),
+              subtitle: "Policy",
+              link: "/private/lob/" + element.id + "/details",
+              imgIcon: require("../../assets/LOBIcon.png"),
+            });
+          });
+        }),
+      (allSearch || contactSearch) &&
         getLobData(
           1,
           searchField,
@@ -134,6 +155,8 @@ export default function AdvancedSearch() {
     documentSearch,
     caseSearch,
     lobSearch,
+    individualSearch,
+    contactSearch,
     toDateForSearch,
   ]);
 
@@ -215,14 +238,26 @@ export default function AdvancedSearch() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={lobSearch}
+                    checked={individualSearch}
                     onChange={() => {
                       setLobsearch(!lobSearch);
                       setAllsearch(false);
                     }}
                   />
                 }
-                label="Line of Bussiness"
+                label="Individuals"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={contactSearch}
+                    onChange={() => {
+                      setLobsearch(!lobSearch);
+                      setAllsearch(false);
+                    }}
+                  />
+                }
+                label="Contacts"
               />
               <FormControlLabel
                 control={
