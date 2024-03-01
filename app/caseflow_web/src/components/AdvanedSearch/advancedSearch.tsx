@@ -13,12 +13,22 @@ import {
 import React, { useEffect, useState } from "react";
 import "./advancedSearch.scss";
 import SearchIcon from "@mui/icons-material/Search";
+import CaseList from "../CaseList/CaseList";
+import IndividualList from "../IndividualList/IndividualList";
+
+
+
+import ContactList from "../ContactList/ContactList";
+import { Cases } from "../Cases/Cases";
 import { searchCases } from "../../services/CaseService";
+import { getIndividualsData} from "../../services/IndividualService";
+import { getContactDetails } from "../../services/ContactService";
 import { searchCaseDocument } from "../../services/DocumentManagementService";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../interfaces/stateInterface";
 import { setadvanceSearchResult } from "../../reducers/applicationReducer";
 import { getLobData } from "../../services/LOBService";
+
 import moment from "moment";
 import { useNavigate } from "react-router";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -37,9 +47,18 @@ export default function AdvancedSearch() {
   const [documentSearch, setDocumentsearch] = useState(false);
   const [caseSearch, setCasesearch] = useState(false);
   const [lobSearch, setLobsearch] = useState(false);
+  const [individualSearch, setIndividualsearch] = useState(false);
+  const [contactSearch, setContactsearch] = useState(false);
   const [fromDateForSearch, setFromDateForSearch] = useState(null);
   const [toDateForSearch, setToDateForSearch] = useState(null);
   const [showDate, setShowDate] = useState(false);
+
+  const caseListProps = {
+    title: GENERIC_NAME,
+    count: 5,
+    isShowSort: false,
+    pagination: true,
+  };
 
   const searchDetails = async () => {
     let result: any = [];
@@ -88,22 +107,37 @@ export default function AdvancedSearch() {
             });
           });
         }),
-      (allSearch || lobSearch) &&
-        getLobData(
-          1,
+      (allSearch || individualSearch) &&
+        getIndividualsData (
+          0,
           searchField,
-          "policyNumber",
+          "id",
           fromDateForSearch,
           toDateForSearch
-        ).then((searchLobResult) => {
-          totalCount = totalCount + searchLobResult?.totalCount;
-          searchLobResult?.CaseflowLob.map((element) => {
+        ).then((searchIndividualResult) => {
+          totalCount = totalCount + searchIndividualResult?.totalCount;
+          searchIndividualResult?.CaseflowLob.map((element) => {
             result.push({
               title: element.id + " - " + element.policyNumber,
               content: moment(element.createdDate).format("MMMM Do, YYYY"),
               subtitle: "Policy",
               link: "/private/lob/" + element.id + "/details",
-              imgIcon: require("../../assets/LOBIcon.png"),
+              imgIcon: require("../../assets/AssignedIcon.png"),
+            });
+          });
+        }),
+      (allSearch || contactSearch) &&
+        getContactDetails (
+          "id",
+        ).then((searchContactResult) => {
+          totalCount = totalCount + searchContactResult?.totalCount;
+          searchContactResult?.CaseflowLob.map((element) => {
+            result.push({
+              title: element.id + " - " + element.policyNumber,
+              content: moment(element.createdDate).format("MMMM Do, YYYY"),
+              subtitle: "Policy",
+              link: "/private/lob/" + element.id + "/details",
+              imgIcon: require("../../assets/ContactsIcon.png"),
             });
           });
         }),
@@ -113,6 +147,22 @@ export default function AdvancedSearch() {
       setadvanceSearchResult({ searchResult: result, totalCount: totalCount })
     );
   };
+  const testcase = [{
+    id:1,
+    name: 'testAaron',
+    title: 'test'
+  }]
+
+  const testcontact = [{
+    id:2,
+    firstname: 'String',
+    lastname: 'String',
+    phonenumber: 1.000,
+    email: 'String',
+    dateofbirth: 'DateTime',
+    address: 'String',
+    createdat: 'DateTime'
+  }]
 
   const clearFilter = () => {
     setCasesearch(false);
@@ -195,6 +245,7 @@ export default function AdvancedSearch() {
                     onChange={() => {
                       setCasesearch(!caseSearch);
                       setAllsearch(false);
+                      
                     }}
                   />
                 }
@@ -215,14 +266,26 @@ export default function AdvancedSearch() {
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={lobSearch}
+                    checked={individualSearch}
                     onChange={() => {
-                      setLobsearch(!lobSearch);
+                      setIndividualsearch(!individualSearch);
                       setAllsearch(false);
                     }}
                   />
                 }
-                label="Line of Bussiness"
+                label="Individual"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={contactSearch}
+                    onChange={() => {
+                      setContactsearch(!contactSearch);
+                      setAllsearch(false);
+                    }}
+                  />
+                }
+                label="Contacts"
               />
               <FormControlLabel
                 control={
@@ -274,10 +337,34 @@ export default function AdvancedSearch() {
             </Box>
           </FormControl>
           <Box sx={{ overflow: "auto", height: "55vh" }}>
-            {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => (
-              <Grid container key={eachValue.title}>
-                <Grid item xs={0.5} sx={{ pt: "5vh" }}>
-                  <img
+           {/* {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => ( 
+            <Grid container key={eachValue.title}> 
+                 <Grid item xs={0.5} sx={{ pt: "5vh" }}>  */}
+                  <div>
+                    <CaseList
+                      //sortSetting={sortSetting}
+                      //setSortSetting={setSortSetting}
+                      config={caseListProps}
+                      allRecentCases= {searchresults?.searchResult}
+                    ></CaseList> 
+                  </div>
+                  <div>
+                    <IndividualList
+                       //sortSetting={sortSetting}
+                       //setSortSetting={setSortSetting}
+                       config={{}}
+                       allRecentIndividuals={searchresults?.searchResult}
+                  ></IndividualList>
+                  </div>
+                  <div>
+                    <ContactList
+                       //sortSetting={sortSetting}
+                       //setSortSetting={setSortSetting}
+                       config={{}}
+                       allRecentContacts={searchresults?.searchResult}
+                  ></ContactList>
+                  </div>
+                   {/* <img
                     alt="Tasksicon"
                     src={eachValue.imgIcon}
                     style={{ height: "1rem" }}
@@ -312,11 +399,11 @@ export default function AdvancedSearch() {
                   </div>
                 </Grid>
               </Grid>
-            )):
+            )): */}
             <Typography variant="body1" className="no-details-found">
             No Result Found!
           </Typography>
-          }
+          {/* }  */}
           </Box>
         </div>
 

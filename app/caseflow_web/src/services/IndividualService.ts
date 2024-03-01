@@ -5,6 +5,7 @@ import {
   FETCH_ALL,
   FETCH_DATA,
   UPDATE_NEW_CASEFLOW_INDIVIDUAL,
+  FETCH_ALL_INDIVIDUALS_DATA,
 } from "../graphql/individualRequest";
 import { print } from "graphql";
 import { PAGINATION_TAKE } from "../apiManager/endpoints/config";
@@ -45,20 +46,20 @@ export const getIndividualsData = async (
   const output = await httpPOSTRequest(
     url,
     {
-      query: print(FETCH_ALL),
+      query: print(FETCH_ALL_INDIVIDUALS_DATA),
       variables: {
-        // searchField: searchField,
-        // searchColumn: searchColumn,
+         searchField: searchField,
+         searchColumn: searchColumn,
         Skip: skip,
         Take: Number(PAGINATION_TAKE),
-        // fromDate:
-        // fromDate && fromDate.$d
-        //   ? moment(fromDate.$d).format("YYYY-MM-DD")
-        //   : "",
-        // toDate:
-        //   toDate && toDate.$d
-        //     ? moment(toDate.$d).format("YYYY-MM-DD")
-        //     : moment().format("YYYY-MM-DD"),
+         fromDate:
+         fromDate && fromDate.$d
+           ? moment(fromDate.$d).format("YYYY-MM-DD")
+           : "",
+          toDate:
+           toDate && toDate.$d
+             ? moment(toDate.$d).format("YYYY-MM-DD")
+             : moment().format("YYYY-MM-DD"),
       },
     },
     null

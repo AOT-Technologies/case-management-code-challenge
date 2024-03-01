@@ -17,7 +17,7 @@ const caseListProps = {
   isShowSort: false,
   pagination: true,
 };
-const Cases = () => {
+export const Cases = () => {
   const [filteredCaseDetails, setFilteredCaseDetails] = useState([]);
   const [searchField, setSearchField] = useState("");
   const [searchColumn, setSearchColumn] = useState("name");
