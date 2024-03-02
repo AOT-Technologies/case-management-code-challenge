@@ -46,6 +46,9 @@ jobs:
   build:
     name: ${{ inputs.component }}
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        node-version: [14.x]
     outputs:
       build: ${{ steps.check.outputs.build }}
     steps:
@@ -142,3 +145,27 @@ jobs:
           #docker push sakthiaot/caseflow-web:tagname
 
           #/usr/bin/docker buildx build --cache-from type=gha --cache-to type=gha,mode=max --iidfile /tmp/docker-build-push-RHJN6n/iidfile --tag ghcr.io/aot-technologies/case-flow-ai-case-management/app/caseflow_core/microservices/lob:dev --metadata-file /tmp/docker-build-push-RHJN6n/metadata-file --push ./app/caseflow_core/microservices/lob/
+      
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        if: steps.check.outputs.build == 'true' && inputs.component == 'app/caseflow_web'
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: "./app/caseflow_web/package-lock.json"
+      - run: npm install --force
+        working-directory: ./app/caseflow_web
+      - run: CI=false npm run build
+        working-directory: ./app/caseflow_web
+
+      - name: Build and push Caseflow Web 
+        if: steps.check.outputs.build == 'true' && inputs.component == 'app/caseflow_web'
+        uses: docker/build-push-action@v3.1.1
+        with:
+          context: ./${{ inputs.component }}/
+          push: true
+          tags: ghcr.io/aot-technologies/case-flow-ai-case-management/${{ inputs.component }}:${{ inputs.img_build }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          
