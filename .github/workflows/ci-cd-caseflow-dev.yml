@@ -23,7 +23,7 @@ jobs:
     uses: ./.github/workflows/_build.yml
     strategy:
       matrix:
-        component: [app/caseflow_core/microservices/dms, app/caseflow_core/microservices/gateway, app/caseflow_core/microservices/lob, app/caseflow_core/microservices/server, app/caseflow_web]
+        component: [app/caseflow_core/microservices/dms, app/caseflow_core/microservices/gateway, app/caseflow_core/microservices/lob, app/caseflow_core/microservices/server]
         include:
           - component: app/caseflow_core/microservices/dms
             triggers: ('app/caseflow_core/microservices/dms/')
@@ -33,8 +33,8 @@ jobs:
             triggers: ('app/caseflow_core/microservices/lob/')
           - component: app/caseflow_core/microservices/server
             triggers:  ('app/caseflow_core/microservices/server/')
-          - component: app/caseflow_web
-            triggers: ('app/caseflow_web/')
+          # - component: app/caseflow_web
+          #   triggers: ('app/caseflow_web/')
     secrets:
       gh_token: ${{ secrets.GITHUB_TOKEN }}
     with:
