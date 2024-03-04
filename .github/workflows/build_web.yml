@@ -1,76 +1,153 @@
-name: forms-flow-bpm Custom
+name: Build Caseflow Web Image
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
-      START_BUILD:
+      component:
+        type: string
         required: true
-        type: boolean
-        description: This value is ignored, just to trigger dispatch.
-  push:
-    branches:
-      - master
-      
-    paths:
-      - 'app/caseflow_web/**'
-      
+        description: Component, e.g. backend, frontend
+      img_build:
+        type: string
+        required: true
+        description: Default zone, usually pr#
+      img_fallback:
+        type: string
+        required: true
+        description: Where to pull default images from, e.g. prod, test
+      force_build:
+        type: string
+        required: false
+        default: "true"
+      repository:
+        type: string
+        required: false
+        default: ${{ github.repository }}
+        description: Optional, specify a repo to clone and build from
+      triggers:
+        type: string
+        required: false
+        default: "('.')"
+        description: Optional, specify paths to conditionally trigger a build, e.g. ('./backend/', './frontend/)
+    secrets:
+      gh_token:
+        required: true
+        description: Default github token (secrets.GITHUB_TOKEN)
+    outputs:
+      build:
+        description: True = build has changed
+        value: ${{ jobs.build.outputs.build }}
 
-defaults:
-  run:
-    shell: bash
-    working-directory: ./app/caseflow_web
 env:
-  APP_NAME: "caseflow-web"
-
+  default_branch: ${{ github.event.repository.default_branch }}
 jobs:
-  case-flow-web:
-    runs-on: ubuntu-20.04
-
-    if: github.repository == 'ghcr.io/aot-technologies/case-flow-ai-case-management'
+  build:
+    name: Build Caseflow Web Image
+    runs-on: ubuntu-latest
+    outputs:
+      build: ${{ steps.check.outputs.build }}
+    strategy:
+      matrix:
+        node-version: [14.x]
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Set ENV variables
-        id: set-variable
-        # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
-        run: |
-          if [ '${{ github.ref_name }}' == 'dev' ]; then
-            echo "For ${{ github.ref_name }} branch"
-            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-            echo "TAG_NAME="dev"" >> $GITHUB_ENV
-            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
-            echo "ENV_NAME="dev"" >> $GITHUB_ENV
-          elif [ '${{ github.ref_name }}' == 'main' ]; then
-            echo "For ${{ github.ref_name }} branch"
-            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-            echo "TAG_NAME="test"" >> $GITHUB_ENV
-            echo "BRANCH_NAME="main"" >> $GITHUB_ENV
-            echo "ENV_NAME="test"" >> $GITHUB_ENV
-          else
-            echo "For ${{ github.ref_name }} branch, defaulting to dev values"
-            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
-            echo "TAG_NAME="dev"" >> $GITHUB_ENV
-            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
-          fi
-        shell: bash
+    
+    - name: Check out code
+      uses: actions/checkout@v2
+      with:
+        # Check out source repo
+        repository: ${{ github.repository }}
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: "./app/caseflow_web/package-lock.json"
+    - run: npm install --force
+      working-directory: ./app/caseflow_web
+    - run: CI=false npm run build
+      working-directory: ./app/caseflow_web
 
-      - name: Login Openshift
-        shell: bash
-        run: |
-          oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_TOKEN}}
-      - name: Tools project
-        shell: bash
-        run: |
-          oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
-      # Build from either dev or main branch as appropriate
-      - name: Build from ${{ env.BRANCH_NAME }} branch
-        shell: bash
-        run: |
-          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"${{ env.BRANCH_NAME }}"}}}}'
-      - name: Start Build Openshift
-        shell: bash
-        run: |
-          oc start-build ${{ env.APP_NAME }}-build --wait
-      - name: Tag+Deploy for ${{ env.TAG_NAME }}
-        shell: bash
-        run: |
-          oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ env.TAG_NAME }}
+    - name: Check and process modified files
+      id: check
+      run: |
+        FORCE_BUILD=${{ inputs.force_build }}
+        if [[ $FORCE_BUILD == "true" ]]
+        then
+                # Output build=true for next steps
+                echo "build=true" >> $GITHUB_OUTPUT
+                exit 0
+        fi
+        # Fetch default branch to diff against
+        git fetch origin ${{ env.default_branch }}:refs/remotes/origin/main
+
+        # Trigger build if diff matches any triggers
+        TRIGGERS=${{ inputs.triggers }}
+        while read -r check
+        do
+          for t in "${TRIGGERS[@]}"; do
+            if [[ "${check}" =~ "${t}" ]]
+            then
+                # Output build=true for next steps
+                echo "build=true" >> $GITHUB_OUTPUT
+                echo -e "${t}\n --> ${check}\n"
+                exit 0
+            fi
+          done
+        done < <(git diff origin/${{ env.default_branch }} --name-only)
+
+        # Check that fallback tag exists, otherwise build
+        TOKEN=$(curl -s https://ghcr.io/token\?scope\="repository:${{ github.repository }}/${{ inputs.component }}:pull" | jq -r .token)
+        URL="https://ghcr.io/v2/${{ github.repository }}/${{ inputs.component }}/manifests/${{ inputs.img_fallback }}"
+        if [ $(curl -ILso /dev/null -w "%{http_code}" -H "Authorization: Bearer ${TOKEN}" "${URL}") -ne 200 ]
+        then
+            # Output build=true for next steps
+            echo "build=true" >> $GITHUB_OUTPUT
+            echo -e "\nBuilding image, since no fallback is available!"
+            exit 0
+        fi
+
+        # If at this point, no build is required
+        echo "build=false" >> $GITHUB_OUTPUT
+        echo "Container build not required"
+
+    # If a build is not required, reuse a previous image
+    - name: Recycle/retag Previous Images
+      uses: shrink/actions-docker-registry-tag@v3
+      if: steps.check.outputs.build != 'true'
+      with:
+        registry: ghcr.io
+        repository: ${{ github.repository }}/${{ inputs.component }}
+        target: ${{ inputs.img_fallback }}
+        tags: ${{ inputs.img_build }}
+
+    # If a build is required, then create a new image
+    - uses: actions/checkout@v3
+      with:
+        # Check out build repo
+        repository: ${{ inputs.repository }}
+
+    - name: Set up Docker Buildx
+      if: steps.check.outputs.build == 'true'
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to the Container registry
+      if: steps.check.outputs.build == 'true'
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.gh_token }}
+
+    - name: Build and push ${{ inputs.component }} Docker image
+      if: steps.check.outputs.build == 'true'
+      uses: docker/build-push-action@v3.1.1
+      with:
+        context: ./${{ inputs.component }}/
+        push: true
+        tags: ghcr.io/aot-technologies/case-flow-ai-case-management/${{ inputs.component }}:${{ inputs.img_build }}
+
+        
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
