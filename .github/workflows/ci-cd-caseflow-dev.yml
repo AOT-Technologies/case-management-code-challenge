@@ -85,29 +85,29 @@ jobs:
     uses: ./.github/workflows/_deploy.yml
     strategy:
       matrix:
-        component: [app/caseflow_core/microservices/dms, app/caseflow_core/microservices/gateway, app/caseflow_core/microservices/lob, app/caseflow_core/microservices/server, app/caseflow_web, daabase]
+        component: [app/caseflow_core/microservices/dms, app/caseflow_core/microservices/gateway, app/caseflow_core/microservices/lob, app/caseflow_core/microservices/server, app/caseflow_web]
         include:
-          - component: database
-            overwrite: false
-            template_file: .github/openshift/deploy.database.yml
-            template_vars: -p DB_PVC_SIZE=200Mi
-          - component: backend/applications
+          # - component: database
+          #   overwrite: false
+          #   template_file: .github/openshift/deploy.database.yml
+          #   template_vars: -p DB_PVC_SIZE=200Mi
+          - component: app/caseflow_web
             overwrite: true
             template_file: .github/openshift/deploy.caseflow-web.yml
             template_vars: -p PROMOTE=${{ github.repository }}/app/caseflow_web -p CONTAINER_PORT=4006 -p ENV=dev -p IMAGE_TAG=dev
-          - component: backend/gateway
+          - component: app/caseflow_core/microservices/dms
             overwrite: true
             template_file: .github/openshift/deploy.microservice-dms.yml
             template_vars: -p PROMOTE=${{ github.repository }}/app/caseflow_core/microservices/dms -p CONTAINER_PORT=4010 -p ENV=dev -p IMAGE_TAG=dev
-          - component: backend/legacy
+          - component: app/caseflow_core/microservices/gateway
             overwrite: true
             template_file: .github/openshift/deploy.microservice-gateway.yml
             template_vars: -p PROMOTE=${{ github.repository }}/app/caseflow_core/microservices/gateway -p CONTAINER_PORT=4011 -p ENV=dev -p IMAGE_TAG=dev
-          - component: backend/users
+          - component: app/caseflow_core/microservices/lob
             overwrite: true
             template_file: .github/openshift/deploy.microservice-lob.yml
             template_vars: -p PROMOTE=${{ github.repository }}/app/caseflow_core/microservices/lob -p CONTAINER_PORT=4005 -p ENV=dev -p IMAGE_TAG=dev  
-          - component: frontend
+          - component: app/caseflow_core/microservices/server
             overwrite: true
             template_file: .github/openshift/deploy.microservice.server.yml
             template_vars: -p PROMOTE=${{ github.repository }}/app/caseflow_core/microservices/server -p CONTAINER_PORT=8080 -p ENV=dev -p IMAGE_TAG=dev 
