@@ -3,7 +3,7 @@ kind: Template
 metadata:
   name: ${NAME}
   annotations:
-    description: "Caseflow -dms"
+    description: "Caseflow-dms"
     tags: "caseflow-backend"
     iconClass: icon-js
 labels:
