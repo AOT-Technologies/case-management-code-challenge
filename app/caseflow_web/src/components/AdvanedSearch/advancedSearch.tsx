@@ -6,6 +6,7 @@ import {
   FormControlLabel,
   Grid,
   InputAdornment,
+  List,
   OutlinedInput,
   TextField,
   Typography,
@@ -15,9 +16,6 @@ import "./advancedSearch.scss";
 import SearchIcon from "@mui/icons-material/Search";
 import CaseList from "../CaseList/CaseList";
 import IndividualList from "../IndividualList/IndividualList";
-
-
-
 import ContactList from "../ContactList/ContactList";
 import { Cases } from "../Cases/Cases";
 import { searchCases } from "../../services/CaseService";
@@ -53,12 +51,12 @@ export default function AdvancedSearch() {
   const [toDateForSearch, setToDateForSearch] = useState(null);
   const [showDate, setShowDate] = useState(false);
 
-  const caseListProps = {
-    title: GENERIC_NAME,
-    count: 5,
-    isShowSort: false,
-    pagination: true,
-  };
+  // const caseListProps = {
+  //   title: GENERIC_NAME,
+  //   count: 5,
+  //   isShowSort: false,
+  //   pagination: true,
+  // };
 
   const searchDetails = async () => {
     let result: any = [];
@@ -147,22 +145,22 @@ export default function AdvancedSearch() {
       setadvanceSearchResult({ searchResult: result, totalCount: totalCount })
     );
   };
-  const testcase = [{
-    id:1,
-    name: 'testAaron',
-    title: 'test'
-  }]
+  // const testcase = [{
+  //   id:1,
+  //   name: 'testAaron',
+  //   title: 'test'
+  // }]
 
-  const testcontact = [{
-    id:2,
-    firstname: 'String',
-    lastname: 'String',
-    phonenumber: 1.000,
-    email: 'String',
-    dateofbirth: 'DateTime',
-    address: 'String',
-    createdat: 'DateTime'
-  }]
+  // const testcontact = [{
+  //   id:2,
+  //   firstname: 'String',
+  //   lastname: 'String',
+  //   phonenumber: 1.000,
+  //   email: 'String',
+  //   dateofbirth: 'DateTime',
+  //   address: 'String',
+  //   createdat: 'DateTime'
+  // }]
 
   const clearFilter = () => {
     setCasesearch(false);
@@ -222,7 +220,7 @@ export default function AdvancedSearch() {
             <Box sx={{ display: "flex", width: "100%" }}>
               <FormControlLabel
                 control={
-                  <Checkbox
+                  <Checkbox className="all-checkbox"
                     checked={allSearch}
                     onChange={() => {
                       setAllsearch(!allSearch);
@@ -240,7 +238,7 @@ export default function AdvancedSearch() {
               />
               <FormControlLabel
                 control={
-                  <Checkbox
+                  <Checkbox 
                     checked={caseSearch}
                     onChange={() => {
                       setCasesearch(!caseSearch);
@@ -253,7 +251,7 @@ export default function AdvancedSearch() {
               />
               <FormControlLabel
                 control={
-                  <Checkbox
+                  <Checkbox  className="documents-checkbox"
                     checked={documentSearch}
                     onChange={() => {
                       setDocumentsearch(!documentSearch);
@@ -265,7 +263,7 @@ export default function AdvancedSearch() {
               />
               <FormControlLabel
                 control={
-                  <Checkbox
+                  <Checkbox className="individual-checkbox"
                     checked={individualSearch}
                     onChange={() => {
                       setIndividualsearch(!individualSearch);
@@ -277,7 +275,7 @@ export default function AdvancedSearch() {
               />
               <FormControlLabel
                 control={
-                  <Checkbox
+                  <Checkbox className="contacts-checkbox"
                     checked={contactSearch}
                     onChange={() => {
                       setContactsearch(!contactSearch);
@@ -289,7 +287,7 @@ export default function AdvancedSearch() {
               />
               <FormControlLabel
                 control={
-                  <Checkbox
+                  <Checkbox className="date-checkbox"
                     checked={showDate}
                     onChange={() => {
                       setShowDate(!showDate);
@@ -340,30 +338,46 @@ export default function AdvancedSearch() {
            {/* {searchresults?.searchResult.length ? searchresults?.searchResult.map((eachValue) => ( 
             <Grid container key={eachValue.title}> 
                  <Grid item xs={0.5} sx={{ pt: "5vh" }}>  */}
+            {caseSearch.valueOf() && (
                   <div>
-                    <CaseList
+                    <CaseList className="cases"
                       //sortSetting={sortSetting}
                       //setSortSetting={setSortSetting}
-                      config={caseListProps}
+                      config={{}}
                       allRecentCases= {searchresults?.searchResult}
                     ></CaseList> 
                   </div>
+              )}
+               {documentSearch.valueOf() && (
                   <div>
-                    <IndividualList
+                    <li className="documents"
+                      //  sortSetting={sortSetting}
+                      //  setSortSetting={setSortSetting}
+                      //  config={{}}
+                      //  allRecentContacts={searchresults?.searchResult}
+                  ></li>
+                  </div>
+              )}
+              {individualSearch.valueOf() && (
+                  <div>
+                    <IndividualList className="individuals"
                        //sortSetting={sortSetting}
                        //setSortSetting={setSortSetting}
                        config={{}}
                        allRecentIndividuals={searchresults?.searchResult}
                   ></IndividualList>
                   </div>
+              )}
+              {contactSearch.valueOf() && (
                   <div>
-                    <ContactList
+                    <ContactList className="contacts"
                        //sortSetting={sortSetting}
                        //setSortSetting={setSortSetting}
                        config={{}}
                        allRecentContacts={searchresults?.searchResult}
                   ></ContactList>
                   </div>
+              )}
                    {/* <img
                     alt="Tasksicon"
                     src={eachValue.imgIcon}
