@@ -8,10 +8,9 @@ on:
         type: boolean
         description: This value is ignored, just to trigger dispatch.
       environment:
-        type: string
-        required: false
-        default: ""
-        description: GitHub environment containing required secrets
+        description: "Environment"
+        required: true
+        type: environment
   push:
     branches:
       - dev
@@ -72,15 +71,15 @@ jobs:
         run: |
           oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
       # Build from either dev or main branch as appropriate
-      - name: Build from ${{ env.BRANCH_NAME }} branch
+      - name: Build from ${{ github.ref_name }} branch
         shell: bash
         run: |
-          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"${{ env.BRANCH_NAME }}"}}}}'
+          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"${{ github.ref_name }}"}}}}'
       - name: Start Build Openshift
         shell: bash
         run: |
           oc start-build ${{ env.APP_NAME }}-build --wait
-      - name: Tag+Deploy for ${{ env.TAG_NAME }}
+      - name: Tag+Deploy for ${{ inputs.environment }}
         shell: bash
         run: |
-          oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ env.TAG_NAME }}
+          oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ inputs.environment }}
