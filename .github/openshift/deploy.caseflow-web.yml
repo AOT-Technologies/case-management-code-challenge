@@ -10,44 +10,72 @@ labels:
   app: ${NAME}-${COMPONENT}
   app.kubernetes.io/part-of: ${NAME}-${COMPONENT}
 parameters:
-  - name: NAME
-    description: Module name
-    value: caseflow
-  - name: COMPONENT
-    description: Component name
-    value: caseflow-web
-  - name: IMAGE_TAG
-    description: Image tag to use
-    value: latest
-  - name: DOMAIN
-    value: apps.silver.devops.gov.bc.ca
-  - name: CPU_REQUEST
-    value: "125m"
-  - name: MEMORY_REQUEST
-    value: "150Mi"
-  - name: CPU_LIMIT
-    value: "275m"
-  - name: MEMORY_LIMIT
-    value: "450Mi"
-  - name: MIN_REPLICAS
-    description: The minimum amount of replicas
-    value: "1"
-  - name: MAX_REPLICAS
-    description: The maximum amount of replicas
-    value: "3"
-  - name: CONTAINER_PORT
-    description: The port on which the application will be accessible
-    required: true
-  - name: REGISTRY
-    description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
-    value: ghcr.io
-  - name: PROMOTE
-    description: Image (namespace/name:tag) to promote/import
-    value: bcgov/nr-epd-digital-services/backend/legacy
-  - name: ENV
-    description: The Environment on which it is deployed
-    required: true
+- name: NAME
+  description: Module name
+  value: caseflow
+- name: COMPONENT
+  description: Component name
+  value: caseflow-web
+- name: IMAGE_TAG
+  description: Image tag to use
+  value: latest
+- name: DOMAIN
+  value: apps.silver.devops.gov.bc.ca
+- name: CPU_REQUEST
+  value: "125m"
+- name: MEMORY_REQUEST
+  value: "150Mi"
+- name: CPU_LIMIT
+  value: "275m"
+- name: MEMORY_LIMIT
+  value: "450Mi"
+- name: MIN_REPLICAS
+  description: The minimum amount of replicas
+  value: "1"
+- name: MAX_REPLICAS
+  description: The maximum amount of replicas
+  value: "3"
+- name: CONTAINER_PORT
+  description: The port on which the application will be accessible
+  required: true
+- name: REGISTRY
+  description: Container registry to import from (internal is image-registry.openshift-image-registry.svc:5000)
+  value: ghcr.io #
+- name: PROMOTE
+  description: Image (namespace/name:tag) to promote/import
+  value: aot-technologies/case-flow-ai-case-management/app/caseflow_web
+- name: ENV
+  description: The Environment on which it is deployed
+  required: true
 objects:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: caseflow-config
+    data:
+      config.js: |-
+        // runtime-config.js vars
+          window["_env_"] =  {
+            "REACT_APP_KEYCLOAK_WEB_CLIENTID": "case-flow-web",
+            "REACT_APP_KEYCLOAK_URL_REALM": "forms-flow-ai",
+            # "REACT_APP_AUTH_CLIENT_ID": "${REACT_APP_AUTH_CLIENT_ID}",
+            "REACT_APP_KEYCLOAK_URL": "https://forms-flow-idm-caseflow.aot-technologies.com",            
+            "REACT_APP_CASEFLOW_API_URL": "https://caseflow-core.aot-technologies.com",
+            "REACT_APP_CASEFLOW_GRAPHQL_API_URL": "https://caseflow-gateway.aot-technologies.com",
+            "REACT_APP_CASEFLOW_DMS": "1",
+            "APPLICATION_NAME": "caseflow.ai",            
+            "REACT_APP_CASEFLOW_LOB_GRAPHQL_API_URL": "https://caseflow-lob.aot-technologies.com",
+            "REACT_APP_PAGINATION_TAKE": "10",  
+            "REACT_APP_FORMSFLOW_URL": "true",
+            "REACT_APP_FORMSFLOW_WEB_URL": "https://forms-flow-bpm-caseflow.aot-technologies.com",
+            "REACT_APP_FORMSFLOW_APP_URL": "https://forms-flow-forms-caseflow.aot-technologies.com",
+            "REACT_APP_CASEFLOW_DMS_API_URL": "https://caseflow-dms.aot-technologies.com",
+            "REACT_APP_FORMSFLOW_FORM_URL": "https://forms-flow-api-caseflow.aot-technologies.com",
+            "REACT_APP_FORMSFLOW_WEB_URL": "https://forms-flow-web-caseflow.aot-technologies.com",
+            "REACT_APP_GENERIC_NAME": "Case"
+
+
+          }
   - apiVersion: v1
     kind: ImageStream
     metadata:
@@ -102,76 +130,6 @@ objects:
                     configMapKeyRef:
                       name: caseflow-configmap
                       key: REACT_APP_KEYCLOAK_WEB_CLIENTID
-                - name: REACT_APP_KEYCLOAK_URL_REALM
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_KEYCLOAK_URL_REALM
-                - name: REACT_APP_KEYCLOAK_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_KEYCLOAK_URL
-                - name: REACT_APP_CASEFLOW_API_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_CASEFLOW_API_URL
-                - name: REACT_APP_CASEFLOW_GRAPHQL_API_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_CASEFLOW_GRAPHQL_API_URL
-                - name: REACT_APP_CASEFLOW_DMS
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_CASEFLOW_DMS
-                - name: APPLICATION_NAME
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: APPLICATION_NAME
-                - name: REACT_APP_CASEFLOW_LOB_GRAPHQL_API_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_CASEFLOW_LOB_GRAPHQL_API_URL
-                - name: REACT_APP_PAGINATION_TAKE
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_PAGINATION_TAKE
-                - name: REACT_APP_FORMSFLOW_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_FORMSFLOW_URL
-                - name: REACT_APP_FORMSFLOW_APP_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_FORMSFLOW_APP_URL
-                - name: REACT_APP_CASEFLOW_DMS_API_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_CASEFLOW_DMS_API_URL
-                - name: REACT_APP_FORMSFLOW_FORM_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_FORMSFLOW_FORM_URL
-                - name: REACT_APP_FORMSFLOW_WEB_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_FORMSFLOW_WEB_URL
-                - name: REACT_APP_GENERIC_NAME
-                  valueFrom:
-                    configMapKeyRef:
-                      name: caseflow-configmap
-                      key: REACT_APP_GENERIC_NAME
                 
                               
               ports:

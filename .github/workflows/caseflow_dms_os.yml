@@ -1,0 +1,83 @@
+name: Caseflow DMS Openshift Build
+
+on:
+    workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
+    push:
+      branches:
+        - 'master'
+        - 'caseflow-ci-cd' #sakthi
+                               
+      paths:
+        - 'app/**'
+        - 'app/caseflow_core/**'
+        - 'app/caseflow_web/**'
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true       
+      
+
+defaults:
+  run:
+    shell: bash
+    working-directory: ./app/caseflow_core/microservices/dms
+env:
+  APP_NAME: "Caseflow DMS Openshift Build"
+
+jobs:
+  case-flow-ai-dms-push:
+    runs-on: ubuntu-20.04
+
+    if: github.repository == 'ghcr.io/aot-technologies/case-flow-ai-case-management'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set ENV variables
+        id: set-variable
+        # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready
+        run: |
+          if [ '${{ github.ref_name }}' == 'dev' ]; then
+            echo "For ${{ github.ref_name }} branch"
+            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
+            echo "TAG_NAME="dev"" >> $GITHUB_ENV
+            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
+            echo "ENV_NAME="dev"" >> $GITHUB_ENV
+          elif [ '${{ github.ref_name }}' == 'master' ]; then
+            echo "For ${{ github.ref_name }} branch"
+            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
+            echo "TAG_NAME="test"" >> $GITHUB_ENV
+            echo "BRANCH_NAME="master"" >> $GITHUB_ENV
+            echo "ENV_NAME="test"" >> $GITHUB_ENV
+          else
+            echo "For ${{ github.ref_name }} branch, defaulting to dev values"
+            echo "TOOLS_NAME=${{secrets.OC_NAMESPACE_NAMEPLATE}}" >> $GITHUB_ENV
+            echo "TAG_NAME="dev"" >> $GITHUB_ENV
+            echo "BRANCH_NAME="dev"" >> $GITHUB_ENV
+          fi
+        shell: bash
+
+      - name: Login Openshift
+        shell: bash
+        run: |
+          oc login --server=${{secrets.OC_SERVER}} --token=${{secrets.OC_TOKEN}}
+
+      - name: Tools project
+        shell: bash
+        run: |
+          oc project ${{ secrets.OC_NAMESPACE_NAMEPLATE }}-tools
+
+      # Build from either dev or main branch as appropriate
+      - name: Build from ${{ env.BRANCH_NAME }} branch
+        shell: bash
+        run: |
+          oc patch bc/${{ env.APP_NAME }}-build -p '{"spec":{"source":{"git":{"ref":"${{ env.BRANCH_NAME }}"}}}}'
+
+      - name: Start Build Openshift
+        shell: bash
+        run: |
+          oc start-build ${{ env.APP_NAME }}-build --wait
+
+
+      - name: Tag+Deploy for ${{ env.TAG_NAME }}
+        shell: bash
+        run: |
+          oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ env.TAG_NAME }}
+
