@@ -1,4 +1,4 @@
-name: forms-flow-web-ee Custom
+name: Caseflow DMS Openshift Build
 
 on:
   workflow_dispatch:
