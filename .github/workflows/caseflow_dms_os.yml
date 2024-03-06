@@ -7,6 +7,11 @@ on:
         required: true
         type: boolean
         description: This value is ignored, just to trigger dispatch.
+      environment:
+        type: string
+        required: false
+        default: ""
+        description: GitHub environment containing required secrets
   push:
     branches:
       - dev
@@ -28,6 +33,7 @@ env:
 jobs:
   caseflow-dms-push:
     runs-on: ubuntu-20.04
+    environment: ${{ inputs.environment }}
 
     # if: github.repository == 'github.com/aot-technologies/case-flow-ai-case-management'
     steps:
