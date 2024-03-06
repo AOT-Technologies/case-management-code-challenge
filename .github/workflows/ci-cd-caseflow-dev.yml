@@ -94,7 +94,7 @@ jobs:
           - component: app/caseflow_web
             overwrite: true
             template_file: .github/openshift/deploy.caseflow-web.yml
-            template_vars: -p PROMOTE=${{ github.repository }}/app/caseflow_web -p CONTAINER_PORT=4006 -p ENV=dev -p IMAGE_TAG=dev
+            template_vars: -p PROMOTE=${{ github.repository }}/app/caseflow_web -p CONTAINER_PORT=8080 -p ENV=dev -p IMAGE_TAG=dev
           - component: app/caseflow_core/microservices/dms
             overwrite: true
             template_file: .github/openshift/deploy.microservice-dms.yml

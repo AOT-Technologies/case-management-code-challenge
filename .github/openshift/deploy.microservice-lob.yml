@@ -4,7 +4,7 @@ metadata:
   name: ${NAME}
   annotations:
     description: "Caseflow-lob"
-    tags: "caseflow-backend"
+    tags: "caseflow"
     iconClass: icon-js
 labels:
   app: ${NAME}-${COMPONENT}
@@ -15,7 +15,7 @@ parameters:
   value: caseflow
 - name: COMPONENT
   description: Component name
-  value: backend-lob
+  value: microservices-lob
 - name: IMAGE_TAG
   description: Image tag to use
   value: latest
