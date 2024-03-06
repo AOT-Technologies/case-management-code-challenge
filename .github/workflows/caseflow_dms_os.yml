@@ -26,7 +26,7 @@ env:
   APP_NAME: "Caseflow-DMS"
 
 jobs:
-  forms-flow-ai-web-ee-cd-by-push:
+  caseflow-dms-push:
     runs-on: ubuntu-20.04
 
     # if: github.repository == 'github.com/aot-technologies/case-flow-ai-case-management'
