@@ -1,21 +1,17 @@
 name: Caseflow DMS Openshift Build
 
 on:
-  workflow_dispatch:
-    inputs:
-      START_BUILD:
-        required: true
-        type: boolean
-        description: This value is ignored, just to trigger dispatch.
-  push:
-    branches:
-      
-      - master
-      - caseflow-ci-cd
-      
-    paths:
-      - 'app/**'
-      - '.github/**'
+    workflow_dispatch: # TODO this is there for testing purposes, once the pipelines are all done, remove this
+    push:
+      branches:
+        - 'master'
+        - 'caseflow-ci-cd' #sakthi
+                               
+      paths:
+        - 'app/**'
+        - 'app/caseflow_core/**'
+        - 'app/caseflow_web/**'
+        
       
 
 defaults:
