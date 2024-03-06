@@ -1,4 +1,4 @@
-name: caseflow dms openshift build
+name: caseflow web openshift build
 
 on:
   workflow_dispatch:
@@ -25,18 +25,30 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: ./app/caseflow_core/microservices/dms
+    working-directory: ./app/caseflow_web
 env:
-  APP_NAME: "caseflow-dms"
+  APP_NAME: "caseflow-web"
 
 jobs:
-  caseflow-dms-push:
+  caseflow-web-push:
     runs-on: ubuntu-20.04
     environment: ${{ inputs.environment }}
 
     # if: github.repository == 'github.com/aot-technologies/case-flow-ai-case-management'
     steps:
       - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: "./app/caseflow_web/package-lock.json"
+      - run: npm install --force
+        working-directory: ./app/caseflow_web
+      - run: CI=false npm run build
+        working-directory: ./app/caseflow_web
+
+      
       - name: Set ENV variables
         id: set-variable
         # make sure to update the TOOLS_NAME once all the environment for forms-flow-ai-web is ready

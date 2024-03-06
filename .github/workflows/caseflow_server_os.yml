@@ -1,4 +1,4 @@
-name: caseflow dms openshift build
+name: caseflow server openshift build
 
 on:
   workflow_dispatch:
@@ -25,12 +25,12 @@ on:
 defaults:
   run:
     shell: bash
-    working-directory: ./app/caseflow_core/microservices/dms
+    working-directory: ./app/caseflow_core/microservices/server
 env:
-  APP_NAME: "caseflow-dms"
+  APP_NAME: "caseflow-server"
 
 jobs:
-  caseflow-dms-push:
+  caseflow-server-push:
     runs-on: ubuntu-20.04
     environment: ${{ inputs.environment }}
 
