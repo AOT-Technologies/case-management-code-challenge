@@ -12,18 +12,18 @@ on:
       - dev
       - master
       
-    paths:
-      - 'app/**'
-    #   - 'frontend/**'
-    #   - 'forms-flow-ai/**'
-    #   - '.github/workflows/**'
+    # paths:
+    #   #- 'app/**'
+    # #   - 'frontend/**'
+    # #   - 'forms-flow-ai/**'
+    # #   - '.github/workflows/**'
 
 defaults:
   run:
     shell: bash
     working-directory: ./app/caseflow_core/microservices/dms
 env:
-  APP_NAME: "forms-flow-web-ee"
+  APP_NAME: "Caseflow-DMS"
 
 jobs:
   forms-flow-ai-web-ee-cd-by-push:
