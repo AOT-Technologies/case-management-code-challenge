@@ -27,7 +27,7 @@ jobs:
   case-flow-ai-dms-push:
     runs-on: ubuntu-20.04
 
-    if: github.repository == 'ghcr.io/aot-technologies/case-flow-ai-case-management'
+    if: github.repository == 'github.com/aot-technologies/case-flow-ai-case-management'
     steps:
       - uses: actions/checkout@v2
       - name: Set ENV variables
