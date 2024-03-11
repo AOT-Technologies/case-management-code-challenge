@@ -82,4 +82,4 @@ jobs:
       - name: Tag+Deploy for ${{ inputs.environment }}
         shell: bash
         run: |
-          oc tag ${{ env.APP_NAME }}:latest ${{ env.APP_NAME }}:${{ inputs.environment }}
+          oc tag ${{ env.APP_NAME }}-build:latest ${{ env.APP_NAME }}:${{ inputs.environment }}
