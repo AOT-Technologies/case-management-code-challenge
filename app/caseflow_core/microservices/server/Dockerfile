@@ -22,5 +22,10 @@ COPY --from=builder /app/dist ./dist
 # Expose port 
 EXPOSE 7001
 
+# Grant access to group 0 to allow npm v9 to work
+# See: https://docs.openshift.com/container-platform/4.11/openshift_images/create-images.html#use-uid_create-images
+RUN chgrp -R 0 ./app/.npm && \
+    chmod -R g=u ./app/.npm
+
 # Start up command, with max heap size as 50Megs
 ENTRYPOINT ["node", "--max-old-space-size=256","dist/main"]
