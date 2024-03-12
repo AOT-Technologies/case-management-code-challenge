@@ -19,11 +19,11 @@ RUN npm install --unsafe-perm --dev
 COPY . /case-flow-web/app/
 RUN npm run build
 
-FROM nginx:latest as production-stage
+FROM nginx:1.17 as production-stage
 
 # Create directory in nginx user's home directory
-RUN mkdir /home/nginx/app
-WORKDIR /home/nginx/app
+RUN mkdir /app
+#WORKDIR /home/nginx/app
 
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
