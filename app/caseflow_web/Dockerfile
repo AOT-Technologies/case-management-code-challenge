@@ -19,16 +19,10 @@ RUN npm install --unsafe-perm --dev
 COPY . /case-flow-web/app/
 RUN npm run build
 
-#RUN cp -r ./dist/. /usr/share/nginx/html
-
 FROM nginx:latest as production-stage
-RUN mkdir /app
-RUN cp --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
+RUN mkdir -p /var/cache/nginx/client_temp && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chmod -R 755 /var/cache/nginx
+    
+COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
-
-RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
-    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
-
-EXPOSE 8080
-
-CMD ["nginx", "-g", "daemon off;"]
