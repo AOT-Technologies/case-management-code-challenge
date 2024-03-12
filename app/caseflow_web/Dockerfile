@@ -21,7 +21,7 @@ RUN npm run build
 
 FROM nginx:latest as production-stage
 
-USER default
+USER nginx
 
 RUN mkdir /app
 WORKDIR /app
