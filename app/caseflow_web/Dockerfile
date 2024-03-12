@@ -19,6 +19,8 @@ RUN npm install --unsafe-perm --dev
 COPY . /case-flow-web/app/
 RUN npm run build
 
+RUN cp -r ./dist/. /usr/share/nginx/html
+
 FROM nginx:latest as production-stage
 RUN mkdir /app
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
