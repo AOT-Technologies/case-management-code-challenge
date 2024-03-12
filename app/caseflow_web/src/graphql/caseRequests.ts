@@ -11,6 +11,17 @@ export const FETCH_CASES = gql`
         desc
         typeid
         lobcaseid
+        email
+        individualName
+        contactName
+        phoneNumber
+        dateofbirth
+        city
+        province
+        issueType
+        description
+        caseOwner
+        resolutionSought
         casestype {
           id
           name
@@ -51,6 +62,17 @@ export const FETCH_CASE_DETAILS = gql`
       name
       desc
       statusid
+      email
+      individualName
+      contactName
+      phoneNumber
+      dateofbirth
+      city
+      province
+      issueType
+      description
+      caseOwner
+      resolutionSought
       casestatus {
         id
         name
@@ -124,6 +146,17 @@ export const SEARCH_CASE_LIST = gql`
         name
         desc
         statusid
+        email
+        individualName
+        contactName
+        phoneNumber
+        dateofbirth
+        city
+        province
+        issueType
+        description
+        caseOwner
+        resolutionSought
         casestatus {
           id
           name
@@ -154,6 +187,17 @@ export const FETCH_RECENT_CASES = gql`
       name
       desc
       statusid
+      email
+      individualName
+      contactName
+      phoneNumber
+      dateofbirth
+      city
+      province
+      issueType
+      description
+      caseOwner
+      resolutionSought
       casestatus {
         id
         name

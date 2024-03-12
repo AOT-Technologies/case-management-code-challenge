@@ -164,7 +164,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-02-09T19:06:39.678Z"
+  creationdate: DateTime = "2024-03-12T07:10:07.795Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -174,6 +174,7 @@ input CreateCaseInput {
   involvedparties: [Int!]
   isdeleted: Boolean = false
   lobcaseid: Float
+  individualName: String!
 }
 
 input UpdateCaseInput {
@@ -184,9 +185,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-02-09T19:06:39.675Z"
+  creationdate: DateTime = "2024-03-12T07:10:07.675Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2024-02-09T19:06:39.675Z"
+  lastmodificationdate: DateTime = "2024-03-12T07:10:07.675Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -194,6 +195,7 @@ input UpdateCaseInput {
   involvedparties: [Int!]
   isdeleted: Boolean = false
   lobcaseid: Float
+  individualName: String!
 }
 
 input RemoveCaseArgs {
@@ -201,7 +203,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2024-02-09T19:06:39.684Z"
+  datetime: DateTime = "2024-03-12T07:10:08.057Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -211,7 +213,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2024-02-09T19:06:39.684Z"
+  datetime: DateTime = "2024-03-12T07:10:08.057Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -266,14 +268,14 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2024-02-09T19:06:39.759Z"
+  creationdate: DateTime = "2024-03-12T07:10:10.752Z"
   userid: Float
   notetext: String
 }
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2024-02-09T19:06:39.759Z"
+  creationdate: DateTime = "2024-03-12T07:10:10.752Z"
   userid: Float
   notetext: String
   id: Int!

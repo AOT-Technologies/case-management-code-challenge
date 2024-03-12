@@ -5,6 +5,17 @@ export class Case {
     desc:string='';
     typeid :number;
     lobcaseid:number;
+    email:string = '';
+    individualName:string = '';
+    contactName:string = '';
+    phoneNumber:number = 0;
+    dateofbirth:Date;
+    city:string = '';
+    province:string = '';
+    issueType:string = '';
+    description:string = '';
+    caseOwner:string = '';
+    resolutionSought:string = '';
 }
 
 

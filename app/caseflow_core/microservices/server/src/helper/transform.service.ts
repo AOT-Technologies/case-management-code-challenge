@@ -29,6 +29,7 @@ export class TransformService {
         involvedparties: data?.involvedparties,
         isdeleted: false,
         lobcaseid : data?.lobcaseid,
+        individualName: data?.individualName,
       };
       return createCaseInput;
     } catch (error) {
@@ -59,6 +60,7 @@ export class TransformService {
         involvedparties: data?.involvedparties,
         isdeleted: false,
         lobcaseid : data?.lobcaseid,
+        individualName: data?.individualName,
       };
       return createCaseInput;
     } catch (error) {

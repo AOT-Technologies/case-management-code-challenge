@@ -53,6 +53,17 @@ export interface SelectedCase {
   tasks: any[];
   additionalFields: any;
   notes: any[];
+  email: string;
+  individualName: string;
+  contactName: string;
+  phoneNumber: number;
+  dateofbirth: Date;
+  city: string;
+  province: string;
+  issueType: String;
+  description: string;
+  caseOwner: string;
+  resolutionSought: string;
 }
 
 export interface SelectedContacts {
@@ -80,6 +91,16 @@ export interface SelectedIndividuals {
 export interface CaseList {
   id: number;
   name: string;
+  email: string;
+  individualName: string;
+  contactName: string;
+  phoneNumber: number;
+  dateofbirth: Date;
+  city: string;
+  province: string;
+  issueType: String;
+  caseOwner: string;
+  resolutionSought: string;
   description: string;
   status: string;
 }

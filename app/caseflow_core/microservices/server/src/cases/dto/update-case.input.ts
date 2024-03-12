@@ -67,6 +67,11 @@ export class UpdateCaseInput {
 
   @Field({ nullable: true })
   lobcaseid: number;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  individualName: string;
 }
 
 @InputType()
