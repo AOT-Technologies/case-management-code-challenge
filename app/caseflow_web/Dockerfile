@@ -20,12 +20,15 @@ COPY . /case-flow-web/app/
 RUN npm run build
 
 FROM nginx:latest as production-stage
-# Set the user directive to the nginx user explicitly
-USER nginx
 
-RUN mkdir -p /var/cache/nginx/client_temp && \
-    chown -R nginx:nginx /var/cache/nginx && \
-    chmod -R 755 /var/cache/nginx
+USER default
+
+RUN mkdir /app
+WORKDIR /app
 
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
+
+# Daemon off makes nginx to run on the foreground with only one process.
+# Docker will kill the container if the process dies.
+CMD ["nginx", "-g", "daemon off;"]
