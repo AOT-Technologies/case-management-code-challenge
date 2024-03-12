@@ -22,7 +22,7 @@ RUN npm run build
 FROM nginx:1.17 as production-stage
 
 # Create directory in nginx user's home directory
-RUN mkdir /app
+#RUN mkdir /app
 #WORKDIR /home/nginx/app
 
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
