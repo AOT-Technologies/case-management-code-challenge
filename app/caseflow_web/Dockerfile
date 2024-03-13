@@ -1,30 +1,29 @@
-# base image
+# Base image for building the application
 FROM node:14.17.0-alpine as build-stage
 
-# set working directory
+# Set the working directory inside the container
 WORKDIR /case-flow-web/app
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /case-flow-web/app/node_modules/.bin:$PATH
+# Copy only the package.json and package-lock.json files to leverage Docker caching
+COPY package-lock.json package.json /case-flow-web/app/
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
-
-# install and cache app dependencies
-COPY package-lock.json /case-flow-web/app/package-lock.json
-COPY package.json /case-flow-web/app/package.json
-
+# Install dependencies
 RUN npm install --unsafe-perm --dev
-#RUN npm install react-scripts@3.0.1 -g --silent
-# create and set user permissions to app folder
-RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
 
+# Copy the entire application code
 COPY . /case-flow-web/app/
 
+# Build the application
 RUN npm run build
 
+# Intermediate stage for serving the built application
 FROM nginx:latest as production-stage
+
+# Copy the built files from the previous stage to Nginx's HTML directory
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
+
+# Copy Nginx configuration file from the host
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
 
+# Command to start Nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
