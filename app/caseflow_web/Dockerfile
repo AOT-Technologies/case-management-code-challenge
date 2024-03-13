@@ -27,9 +27,15 @@ RUN apk update && apk upgrade && \
 COPY package-lock.json /case-flow-web/app/package-lock.json
 COPY package.json /case-flow-web/app/package.json
 
-RUN npm install --unsafe-perm --production
-#RUN npm install react-scripts@3.0.1 -g --silent
-COPY . /case-flow-web/app/
+RUN npm install --silent
+RUN npm install react-scripts@3.4.1 -g --silent
+
+# create and set user permissions to app folder
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+
+# add app files
+COPY . ./
+
 RUN npm run build
 
 FROM nginx:latest as production-stage
