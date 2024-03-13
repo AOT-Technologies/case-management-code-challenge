@@ -31,4 +31,7 @@ COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
 RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
     chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
 
+# Allow Nginx to bind to port 80
+USER root
+
 CMD ["nginx", "-g", "daemon off;"]
