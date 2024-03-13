@@ -80,7 +80,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
+  "Dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "sass": "^1.55.0"
   }
