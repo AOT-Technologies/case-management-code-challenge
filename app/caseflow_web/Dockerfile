@@ -2,7 +2,8 @@
 FROM node:14.17.0-alpine as build-stage
 
 COPY ./package*.json ./
-RUN npm ci
+# Install dependencies
+RUN npm install --unsafe-perm --dev
 COPY . ./
 
 # Build the application
