@@ -16,18 +16,16 @@ COPY package.json /case-flow-web/app/package.json
 
 RUN npm install --unsafe-perm --dev
 #RUN npm install react-scripts@3.0.1 -g --silent
+# create and set user permissions to app folder
+RUN mkdir -p node_modules/.cache && chmod -R 777 node_modules/.cache
+
 COPY . /case-flow-web/app/
+
 RUN npm run build
 
-FROM nginx:1.17 as production-stage
-
-# Create directory in nginx user's home directory
-#RUN mkdir /app
-#WORKDIR /home/nginx/app
-
+FROM nginx:latest as production-stage
+RUN mkdir /app
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
 
-# Daemon off makes nginx to run on the foreground with only one process.
-# Docker will kill the container if the process dies.
 CMD ["nginx", "-g", "daemon off;"]
