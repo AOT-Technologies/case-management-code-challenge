@@ -23,16 +23,12 @@ RUN npm run build
 
 FROM nginx:latest as production-stage
 
-# Fix permissions for Nginx directories
-# Fix permissions for Nginx directories
-RUN mkdir -p /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp && \
-    chmod 755 /var/cache/nginx && \
-    chmod 700 /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp && \
-    chown nginx:nginx /var/cache/nginx/client_temp /var/cache/nginx/proxy_temp
-
-
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
+
+# Fix permissions for Nginx directories
+RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
+    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
 
 CMD ["nginx", "-g", "daemon off;"]
