@@ -1,26 +1,35 @@
-# Base image for building the application
+# base image
 FROM node:14.17.0-alpine as build-stage
 
-COPY ./package*.json ./
-# Install dependencies
-RUN npm install --unsafe-perm --dev
-COPY . ./
+# set working directory
+WORKDIR /case-flow-web/app
 
-# Build the application
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /case-flow-web/app/node_modules/.bin:$PATH
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+
+# install and cache app dependencies
+COPY package-lock.json /case-flow-web/app/package-lock.json
+COPY package.json /case-flow-web/app/package.json
+
+RUN npm install --unsafe-perm --dev
+#RUN npm install react-scripts@3.0.1 -g --silent
+
+COPY . /case-flow-web/app/
+
 RUN npm run build
 
-# Intermediate stage for serving the built application
-FROM artifacts.developer.gov.bc.ca/redhat-access-docker-remote/ubi8/nginx-122 AS deployer
+FROM nginx:latest as production-stage
 
-USER default
+# Fix permissions for Nginx directories
+RUN mkdir -p /var/cache/nginx/client_temp && \
+    chmod 755 /var/cache/nginx && \
+    chmod 700 /var/cache/nginx/client_temp && \
+    chown nginx:nginx /var/cache/nginx/client_temp
 
-RUN ls -lrt
-
-# Copy the built files from the previous stage to Nginx's HTML directory
-COPY --from=build-stage ./build /usr/share/nginx/html
-
-# Copy Nginx configuration file from the host
+COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
 
-# Command to start Nginx when the container starts
 CMD ["nginx", "-g", "daemon off;"]
