@@ -35,4 +35,4 @@ RUN npm run build
 FROM nginx:latest as production-stage
 RUN mkdir /app
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
-COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
