@@ -19,7 +19,7 @@ RUN npm install react-scripts@3.0.1 -g --silent
 
 COPY . /case-flow-web/app/
 
-#RUN npm run build
+RUN npm run build
 
 # Stage 2: Serve React App with NGINX
 FROM nginx:alpine as production-stage
