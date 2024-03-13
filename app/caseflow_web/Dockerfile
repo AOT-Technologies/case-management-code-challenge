@@ -14,8 +14,8 @@ RUN apk update && apk upgrade && \
 COPY package-lock.json /case-flow-web/app/package-lock.json
 COPY package.json /case-flow-web/app/package.json
 
-RUN npm install --unsafe-perm --dev
-#RUN npm install react-scripts@3.0.1 -g --silent
+#RUN npm install --unsafe-perm --also=dev
+RUN npm install react-scripts@3.0.1 -g --silent
 
 COPY . /case-flow-web/app/
 
