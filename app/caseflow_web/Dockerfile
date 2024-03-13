@@ -20,18 +20,13 @@ RUN npm install --unsafe-perm --dev
 COPY . /case-flow-web/app/
 
 RUN npm run build
-# Stage 2: Serve React App with NGINX
-FROM nginx:alpine as production-stage
+
+FROM artifacts.developer.gov.bc.ca/redhat-access-docker-remote/ubi8/nginx-122 AS deployer
+
+USER default
 
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
-
-# Fix permissions for Nginx directories
-RUN chgrp -R root /var/cache/nginx /var/run /var/log/nginx && \
-    chmod -R 770 /var/cache/nginx /var/run /var/log/nginx
-
-# Allow Nginx to bind to port 80
-USER root
 
 CMD ["nginx", "-g", "daemon off;"]
