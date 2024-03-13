@@ -27,6 +27,6 @@ USER default
 
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
 
-COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
+#COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon off;"]
