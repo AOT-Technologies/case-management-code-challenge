@@ -30,6 +30,7 @@ RUN mkdir -p /var/cache/nginx/client_temp && \
     chown nginx:nginx /var/cache/nginx/client_temp
 
 COPY --from=build-stage /case-flow-web/app/build /usr/share/nginx/html
+
 COPY ./nginx_conf/nginx.conf /etc/nginx/nginx.conf
 
 CMD ["nginx", "-g", "daemon off;"]
