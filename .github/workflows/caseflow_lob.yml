@@ -53,7 +53,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-              task-definition: ./ecs-task-definition/ccaseflow_lob-revision5.json
+              task-definition: ./ecs-task-definition/caseflow_lob-revision5.json
               container-name: caseflow-lob
               image: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
           
