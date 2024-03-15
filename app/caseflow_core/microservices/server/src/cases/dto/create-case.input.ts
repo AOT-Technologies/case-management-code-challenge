@@ -11,34 +11,29 @@ import {
  */
 @InputType()
 export class CreateCaseInput {
-  @Field((type) => Int, { nullable: true })
-  lobid: number;
+ 
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  clientid: string;
 
   @Field()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  contactid: string;
 
-  @Field({ nullable: true })
-  @IsString()
-  @IsNotEmpty()
-  desc: string;
-
-  @Field((type) => Int)
+  @Field()
   @IsNumber()
   @IsNotEmpty()
-  statusid: number;
+  status: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsNumber()
   @IsNotEmpty()
-  typeid: number;
+  issuetype: string;
 
-  @Field((type) => [Int], { nullable: true })
-  linkedcases: number[];
-
-  @Field({ defaultValue: new Date() })
-  creationdate: Date;
+  @Field({ nullable:true })
+  nextreviewdate: Date;
 
   @Field({ nullable: true })
   completiondate: Date;
@@ -46,8 +41,9 @@ export class CreateCaseInput {
   @Field({ nullable: true })
   lastmodificationdate: Date;
 
+  
   @Field({ nullable: true })
-  penduntildate: Date;
+  creationdate: Date;
 
   @Field({ nullable: true })
   archivedate: Date;
@@ -55,20 +51,4 @@ export class CreateCaseInput {
   @Field((type) => Int, { nullable: true })
   startuserid: number;
 
-  @Field((type) => Int, { nullable: true })
-  currentownerid: number;
-
-  @Field((type) => [Int], { nullable: true })
-  involvedparties: number[];
-
-  @Field({ defaultValue: false, nullable: true })
-  isdeleted: boolean;
-
-  @Field({ nullable: true })
-  lobcaseid: number;
-
-  @Field()
-  @IsString()
-  @IsNotEmpty()
-  individualName: string;
 }

@@ -45,7 +45,7 @@ const ContactDetail = () => {
       <div className="lob-details-container">
         <div className="header-search">
           <Typography variant="body1" className="title">
-            CaseFlow
+            Case Details
           </Typography>
         </div>
       </div>

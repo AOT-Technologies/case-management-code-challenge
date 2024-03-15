@@ -16,7 +16,7 @@ const NewCaseComponent = () => {
     <div className="dashboard">
       <div className="header-search">
         <Typography variant="body1" className="title">
-          CaseFlow
+          New Case
         </Typography>
         <div className="search">
           <Search

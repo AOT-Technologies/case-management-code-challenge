@@ -8,97 +8,55 @@ import {
 } from "../../../apiManager/endpoints/config";
 import moment from "moment";
 interface CaseDetailDataProps {
-  contactName: String;
-  individual: String;
+  clientid: String;
+  contactid: String;
   startDate: any;
-  owner: String;
-  caseDescription: String;
-  tasks: any;
-  dueDate: any;
-  city: String;
-  province: String;
-  additionalInfo: String;
+  issuetype: String;
+  nextreviewdate: any;
+  status: String;
 }
 
 const CaseDetailData = ({
-  contactName,
-  individual,
+  clientid,
   startDate,
-  owner,
-  caseDescription,
-  tasks,
-  dueDate,
-  city,
-  province,
-  additionalInfo,
+  contactid,
+  status,
+  issuetype,
+  nextreviewdate
 }: CaseDetailDataProps) => {
   return (
     <>
       <div className="case-details">
         <div className="case-detail-name">
-          <Typography variant="subtitle1">Contact name</Typography>
-          <Typography variant="body2">Samuel James</Typography>
+          <Typography variant="subtitle1">Contact Name</Typography>
+          <Typography variant="body2">{contactid}</Typography>
         </div>
         <div className="case-detail-name">
-          <Typography variant="subtitle1">Individual</Typography>
-          <Typography variant="body2">Shruti James</Typography>
+          <Typography variant="subtitle1">Client Name</Typography>
+          <Typography variant="body2">{clientid}</Typography>
         </div>
         <div className="case-detail-date">
           <Typography variant="subtitle1">Start Date</Typography>
 
           <Typography variant="body2">
-          <Typography variant="body2">2024-02-14</Typography>
+          <Typography variant="body2">{startDate}</Typography>
           </Typography>
         </div>
         <div>
           <Typography variant="subtitle1">
-              {GENERIC_NAME} Description
+              Status
             </Typography>
-          <Typography variant="body2">Request for 50-50 Child custody</Typography>
+          <Typography variant="body2">{status}</Typography>
         </div>
         <div className="case-detail-owner">
-          <Typography variant="subtitle1">Owner</Typography>
-          <Typography variant="body2">{owner}</Typography>
+          <Typography variant="subtitle1">issuetype</Typography>
+          <Typography variant="body2">{issuetype}</Typography>
         </div>
         <div className="case-detail-date">
-        <Typography variant="subtitle1">Due Date</Typography>
-        <Typography variant="body2">2025-02-14</Typography>
+        <Typography variant="subtitle1">nextreviewdate</Typography>
+        <Typography variant="body2">{nextreviewdate}</Typography>
 
         </div>
-        <div className="case-detail-city">
-          <Typography variant="subtitle1">City</Typography>
-          <Typography variant="body2">Victoria</Typography>
-        </div>
-        <div className="case-detail-province">
-          <Typography variant="subtitle1">Province</Typography>
-          <Typography variant="body2">BC</Typography>
-        </div>
-        <div>
-          <Typography variant="subtitle1">
-              Additional Information
-            </Typography>
-          <Typography variant="body2">parent needs custody of the child</Typography>
-        </div>
-      </div>
-
-      <div className="case-tasks">
-        <Typography variant="subtitle1">
-          Current Task{tasks?.length > 1 ? "s" : ""}
-        </Typography>
-        {tasks && tasks.length ? (
-          tasks.map((task: any, index: any) => (
-            <Link target="_blank" href={FORMSFLOW_WEB_URL + `/task/${task.id}`}>
-              {" "}
-              <Typography variant="body2" key={index}>
-                {task.name}
-              </Typography>
-            </Link>
-          ))
-        ) : (
-          <Typography variant="body2" style={{ "padding-bottom": "1rem" }}>
-            No Tasks
-          </Typography>
-        )}
       </div>
     </>
   );

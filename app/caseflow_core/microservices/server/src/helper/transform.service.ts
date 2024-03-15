@@ -13,23 +13,16 @@ export class TransformService {
   transformCreateCase = (data) => {
     try {
       const createCaseInput: CreateCaseInput = {
-        name: data.name,
-        desc: data?.description,
-        lobid: data?.lobid,
-        statusid: data?.statusid,
-        typeid: data?.typeid,
-        linkedcases: data?.linkedcases,
+        clientid: data.clientid,
+        contactid: data?.contactid,
+        issuetype: data?.issuetype,
+        nextreviewdate: data?.nextreviewdate,
+        status: data?.status,
         creationdate: data?.creationdate,
         completiondate: data?.completiondate,
         lastmodificationdate: data?.lastmodificationdate,
-        penduntildate: data?.penduntildate,
         archivedate: data?.archivedate,
-        startuserid: data?.startuserid,
-        currentownerid: data?.currentownerid,
-        involvedparties: data?.involvedparties,
-        isdeleted: false,
-        lobcaseid : data?.lobcaseid,
-        individualName: data?.individualName,
+        startuserid: data?.startuserid
       };
       return createCaseInput;
     } catch (error) {
@@ -44,23 +37,16 @@ export class TransformService {
     try {
       const createCaseInput: UpdateCaseInput = {
         id: data.id,
-        name: data?.name,
-        desc: data?.description,
-        lobid: data?.lobid,
-        statusid: data?.statusid,
-        typeid: data?.typeid,
-        linkedcases: data?.linkedcases,
+        contactid: data?.contactid,
+        clientid: data?.clientid,
+        status: data?.status,
+        issuetype: data?.issuetype,
         creationdate: data?.creationdate,
         completiondate: data?.completiondate,
         lastmodificationdate: data?.lastmodificationdate,
-        penduntildate: data?.penduntildate,
         archivedate: data?.archivedate,
         startuserid: data?.startuserid,
-        currentownerid: data?.currentownerid,
-        involvedparties: data?.involvedparties,
-        isdeleted: false,
-        lobcaseid : data?.lobcaseid,
-        individualName: data?.individualName,
+        nextreviewdate: data?.nextreviewdate,
       };
       return createCaseInput;
     } catch (error) {

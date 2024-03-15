@@ -7,27 +7,11 @@ export const FETCH_CASES = gql`
       totalCount
       Cases {
         id
-        name
-        desc
-        typeid
-        lobcaseid
-        email
-        individualName
-        contactName
-        phoneNumber
-        dateofbirth
-        city
-        province
-        issueType
-        description
-        caseOwner
-        resolutionSought
-        casestype {
-          id
-          name
-          displayname
-          code
-        }
+        clientid
+        issuetype
+        contactid
+        nextreviewdate
+        status
       }
     }
   }
@@ -59,38 +43,11 @@ export const FETCH_CASE_DETAILS = gql`
   query getCase($CaseId: Int!) {
     getCase(id: $CaseId) {
       id
-      name
-      desc
-      statusid
-      email
-      individualName
-      contactName
-      phoneNumber
-      dateofbirth
-      city
-      province
-      issueType
-      description
-      caseOwner
-      resolutionSought
-      casestatus {
-        id
-        name
-        displayname
-        casestype {
-          id
-          name
-          displayname
-        }
-      }
-      typeid
-      lobcaseid
-      casestype {
-        id
-        name
-        displayname
-        code
-      }
+      clientid
+      issuetype
+      contactid
+      nextreviewdate
+      status
     }
   }
 `;
@@ -139,38 +96,11 @@ export const SEARCH_CASE_LIST = gql`
       totalCount
       Cases {
         id
-        name
-        desc
-        statusid
-        email
-        individualName
-        contactName
-        phoneNumber
-        dateofbirth
-        city
-        province
-        issueType
-        description
-        caseOwner
-        resolutionSought
-        casestatus {
-          id
-          name
-          displayname
-          casestype {
-            id
-            name
-            displayname
-          }
-        }
-        typeid
-        lobcaseid
-        casestype {
-          id
-          name
-          displayname
-          code
-        }
+        clientid
+        issuetype
+        contactid
+        nextreviewdate
+        status
       }
     }
   }
@@ -180,38 +110,11 @@ export const FETCH_RECENT_CASES = gql`
   query {
     fetchRecentCase {
       id
-      name
-      desc
-      statusid
-      email
-      individualName
-      contactName
-      phoneNumber
-      dateofbirth
-      city
-      province
-      issueType
-      description
-      caseOwner
-      resolutionSought
-      casestatus {
-        id
-        name
-        displayname
-        casestype {
-          id
-          name
-          displayname
-        }
-      }
-      typeid
-      lobcaseid
-      casestype {
-        id
-        name
-        displayname
-        code
-      }
+      clientid
+      issuetype
+      contactid
+      nextreviewdate
+      status
     }
   }
 `;

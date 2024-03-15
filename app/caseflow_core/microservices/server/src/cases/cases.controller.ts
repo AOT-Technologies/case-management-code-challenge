@@ -90,7 +90,6 @@ export class CasesController {
         });
       if (!field?.isdeleted) {
         const body = new UpdateCaseInput();
-        body.isdeleted = true;
         return this.casesService.updateCase(param.id, body);
       } else return new NotFoundException('No case found to delete');
     } catch (error) {

@@ -601,7 +601,7 @@ const CaseDetails = () => {
       <div className="details-container">
         <div className="header-search">
           <Typography variant="body1" className="title">
-            CaseFlow
+            Case
           </Typography>
           <div className="search">
             <Search
@@ -619,7 +619,7 @@ const CaseDetails = () => {
                 {GENERIC_NAME} ID : {selectedCase.id}
               </p>
               <Typography className="case-status">
-                {selectedCase?.casestatus?.displayname}
+                {selectedCase?.status}
               </Typography>
             </div>
             <FilterMuiComponent
@@ -633,14 +633,12 @@ const CaseDetails = () => {
           {selectedCase && selectedCase.id ? (
             <>
               <CaseDetailData
-                contactName={selectedCase.name}
+                clientid={selectedCase.clientid}
                 startDate={caseDetail.startDate}
-                owner={caseDetail.owner}
-                caseDescription={selectedCase.desc}
-                tasks={tasks}
-                dueDate={caseDetail.dueDate}
-                additionalInfo={selectedCase.desc}
-                individual={selectedCase.name}
+                contactid={selectedCase.contactid}
+                status={selectedCase.status}
+                issuetype={selectedCase.issuetype}
+                nextreviewdate={selectedCase.nextreviewdate}
               />
               <CaseDetailReference caseId={selectedCase.id} />
             </>
@@ -667,7 +665,7 @@ const CaseDetails = () => {
             </AccordionDetails>
           </Accordion>
 
-          <LobCustom />
+          {/* <LobCustom /> */}
         </section>
         <section className="case-history-container">
           <CaseHistory caseId={selectedCase.id}></CaseHistory>

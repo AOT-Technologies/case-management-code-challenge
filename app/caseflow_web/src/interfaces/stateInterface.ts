@@ -42,28 +42,11 @@ export interface Document {
 
 export interface SelectedCase {
   id: number;
-  name: string;
-  desc: string;
-  statusid: number;
-  lobDetails: any;
-  documents: any[];
-  totalDocCount: number;
-  typeid: number;
-  lobcaseid: number;
-  tasks: any[];
-  additionalFields: any;
-  notes: any[];
-  email: string;
-  individualName: string;
-  contactName: string;
-  phoneNumber: number;
-  dateofbirth: Date;
-  city: string;
-  province: string;
-  issueType: String;
-  description: string;
-  caseOwner: string;
-  resolutionSought: string;
+  clientid:string;
+  issuetype:string;
+  contactid:string ;
+  nextreviewdate:Date;
+  status:string;
 }
 
 export interface SelectedContacts {
@@ -94,19 +77,11 @@ export interface SelectedIndividuals {
 
 export interface CaseList {
   id: number;
-  name: string;
-  email: string;
-  individualName: string;
-  contactName: string;
-  phoneNumber: number;
-  dateofbirth: Date;
-  city: string;
-  province: string;
-  issueType: String;
-  caseOwner: string;
-  resolutionSought: string;
-  description: string;
-  status: string;
+  clientid:string;
+  issuetype:string;
+  contactid:string ;
+  nextreviewdate:Date;
+  status:string;
 }
 [];
 

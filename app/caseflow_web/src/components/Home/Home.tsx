@@ -13,20 +13,18 @@ const Home = () =>
           <MiniDrawer />
         </div>
         <div className="outlet">
-        <div className="header" style={{backgroundColor:"#003366", minHeight:"100px"}}>
-<Link to="/">
-                                <img
-                                  // src={require("../../assets/HomeIcon.png")}
-                                    src={SVG}
-                                    className="d-inline-block align-top"
-                                    alt=""
-                                    style={{ marginRight: "2rem",  height: "100px", width:"200px"  }}
-                                />
-                        </Link>
-                        <text style={{ fontSize: "3vw", fontWeight: "bold", color: 'white' }}>Case Management</text>
-                        
-        </div>
-        
+          <div className="header" style={{backgroundColor:"#003366", minHeight:"100px", display:"flex"}}>
+            <Link to="/">
+              <img
+                // src={require("../../assets/HomeIcon.png")}
+                  src={SVG}
+                  className="d-inline-block align-top"
+                  alt=""
+                  style={{ marginRight: "2rem",  height: "100px", width:"200px"  }}
+              />
+            </Link>
+            <text style={{ fontSize: "3vw", fontWeight: "bold", color: 'white', alignSelf:"center", marginLeft:"5%" }}>Case Management</text>
+          </div>
           <Loader />
           <Outlet />
         </div>

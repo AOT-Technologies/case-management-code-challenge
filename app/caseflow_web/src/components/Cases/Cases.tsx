@@ -99,7 +99,7 @@ const Cases = () => {
     <section className="dashboard">
       <div className="header-search">
         <Typography variant="body1" className="title">
-          CaseFlow
+          Cases
         </Typography>
         <div className="search">
           <Search

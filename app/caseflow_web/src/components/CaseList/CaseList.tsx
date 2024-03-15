@@ -45,11 +45,7 @@ const CaseList = React.memo(
 
     return (
       <div style={{ padding: "2rem 4rem 0rem 4rem" }}>
-        <span className="recent-case-header">
-          <Typography variant="h6" className="recent-case-header-font ">
-            {config.title}
-          </Typography>
-        </span>
+        
 
         <List>
           <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>

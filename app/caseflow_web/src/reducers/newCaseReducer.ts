@@ -2,21 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   selectedCase: {
     id: 0,
-    name: "",
-    status: "",
-    email:"",
-    individualName:"",
-    contactName:"",
-    phoneNumber:"",
-    dateofbirth:"Date",
-    city:"",
-    province:"",
-    issueType:"",
-    description:"",
-    caseOwner:"",
-    resolutionSought:"",
-    isEdit: false,
-    lobDetails: {},
+    clientid:"",
+    issuetype:"",
+    contactid:"",
+    nextreviewdate:"Date",
+    status:"",
     documents: [],
     totalDocCount: 0,
     tasks: [],
@@ -26,19 +16,11 @@ const initialState = {
   caseList: [
     {
       id: 0,
-      name: "",
-      status: "",
-      email:"",
-      individualName:"",
-      contactName:"",
-      phoneNumber:"",
-      dateofbirth:"Date",
-      city:"",
-      province:"",
-      issueType:"",
-      description:"",
-      caseOwner:"",
-      resolutionSought:"",
+      clientid:"",
+      issuetype:"",
+      contactid:"",
+      nextreviewdate:"Date",
+      status:"",
     },
   ],
   totalCaseCount: 0,
@@ -62,7 +44,7 @@ const caseSlice = createSlice({
       state.selectedCase = initialState.selectedCase;
     },
     setSelectedCaseLOBDetails: (state, action) => {
-      state.selectedCase.lobDetails = action.payload;
+      state.selectedCase.contactid = action.payload;
     },
     setSelectedCaseDocuments: (state, action) => {
       state.selectedCase.documents = action.payload;

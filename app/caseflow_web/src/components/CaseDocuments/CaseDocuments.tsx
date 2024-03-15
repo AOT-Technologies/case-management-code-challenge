@@ -153,7 +153,7 @@ const CaseDocuments = () => {
     <section className="dashboard">
       <div className="header-search">
         <Typography variant="body1" className="title">
-          CaseFlow
+          Case
         </Typography>
         <div className="search">
           <Search

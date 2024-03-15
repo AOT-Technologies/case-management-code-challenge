@@ -14,12 +14,18 @@ const LobCustom = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedCase = useSelector((state: State) => state.cases.selectedCase);
-  const lobData = selectedCase.lobDetails;
+  const contactid = selectedCase.contactid;
+  const clientid = selectedCase.clientid;
   useEffect(() => {
-    if (selectedCase.lobcaseid > 0) {
-      getCaseLobDetails(selectedCase.lobcaseid);
+    if (selectedCase.clientid) {
+      getCaseLobDetails(selectedCase.clientid);
     }
-  }, [selectedCase.lobcaseid]);
+  }, [selectedCase.clientid]);
+  useEffect(() => {
+    if (selectedCase.contactid) {
+      getCaseLobDetails(selectedCase.contactid);
+    }
+  }, [selectedCase.contactid]);
   const getCaseLobDetails = async (id) => {
     let lobDetails = await getLobDetails(id);
     if (lobDetails && lobDetails.id) {
@@ -28,7 +34,7 @@ const LobCustom = () => {
   };
 
   const navigateToLob = () => {
-    navigate("/private/lob/" + lobData.id + "/details");
+    navigate("/private/contacts/" + selectedCase.clientid + "/details");
   };
 
   return (
