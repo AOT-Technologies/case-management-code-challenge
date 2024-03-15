@@ -21,16 +21,12 @@ export const FETCH_ALL_LOB_DATA = gql`
     $Take: Int!
     $SearchField: String!
     $SearchColumn: String!
-    $fromDate: String!
-    $toDate: String!
   ) {
     searchCaseflowLob(
       searchField: $SearchField
       searchColumn: $SearchColumn
       skip: $Skip
       take: $Take
-      fromDate: $fromDate
-      toDate: $toDate
     ) {
       totalCount
       CaseflowLob {

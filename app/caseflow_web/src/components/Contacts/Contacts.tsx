@@ -9,11 +9,11 @@ import {
   setTotalContactCount,
   setsearchContactResult,
 } from "../../reducers/newContactReducer";
-import { Button, FormControl, TextField, Typography } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
 import CustomizedDialog from "../Dialog/Dialog";
 import { State } from "../../interfaces/stateInterface";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 const contactListProps = {
   title: GENERIC_NAME,
   count: 5,
@@ -24,12 +24,17 @@ const Contacts = () => {
   
   const navigate = useNavigate();
   const [filteredContactDetails, setFilteredContactDetails] = useState([]);
-  const [searchField, setSearchField] = useState();
+  const [searchField, setSearchField] = useState('');
   const [firstname, setFirstname]:any = useState();
   const [lastname, setLastname]:any = useState();
   const [phonenumber, setPhonenumber]:any = useState();
   const [email, setEmail]:any = useState();
-  const [dateofbirth, setDateofbirth]:any = useState();
+  const [age, setAge]:any = useState();
+  const [city, setCity]:any = useState();
+  const [region, setRegion]:any = useState('');
+  const [otherregion, setOtherregion]:any = useState();
+  const [showOtherField, setShowOtherField]:any = useState(false);
+  const [category, setCategory]:any = useState('');
   const [address, setAddress]:any = useState();
   const [searchColumn, setSearchColumn] = useState("firstname");
   const [dropDownArray, setdropDownArray] = useState(["Name", "Description"]);
@@ -51,9 +56,7 @@ const Contacts = () => {
     let searchResult = await getContactsData(
       selectedPage,
       searchField,
-      searchColumn,
-      null,
-      null
+      searchColumn
     );
     let searchResultContacts = searchResult?.map((element) => {
       return { ...element, status: "Open" };
@@ -67,29 +70,26 @@ const Contacts = () => {
   const createContact = async () =>{
      
       let response = await createNewContact({ firstname,
-        lastname, phonenumber, email, dateofbirth, address
+        lastname, phonenumber, email, age, category, address, region, city, otherregion
       });
       if(response.id){
         setOpenCreateContactPopup(false);
         await toast.success("Contact created succesfully!");
         navigate("/private/contacts/" + response.id + "/details");      }
       else{
-        toast.error("Failed to  add the note. Please try again!");
+        toast.error("Failed to  add the contact. Please try again!");
       }
   }
   const searchContactsDetails = async () => {
     let searchResult = await getContactsData(
       selectedPage,
       searchField,
-      searchColumn,
-      null,
-      null
+      searchColumn
     );
     let searchResultContacts = searchResult?.map((element) => {
       return {
-        title: element.id + " - " + element.firstname,
-        content: element.firstname,
-        subtitle: GENERIC_NAME,
+        title: element.firstname + " " + element.lastname,
+        content: 'phone - '+element.phonenumber,
         link: "/private/contacts/" + element.id + "/details",
         imgIcon: require("../../assets/ContactsIcon.png"),
       };
@@ -123,6 +123,14 @@ const handleCreatNewContact = ()=> {
   const handleCreateContactsPopUpClose = ()=> {
     setOpenCreateContactPopup(false);
   };
+  const handleRegion = (region) => {
+    setRegion(region);
+    if (region==='Outside of BC') {
+      setShowOtherField(true);
+    }else {
+      setShowOtherField(false);
+    }
+  }
   return (
     <>
     <CustomizedDialog
@@ -134,12 +142,12 @@ const handleCreatNewContact = ()=> {
       >
         <div className="workflow">
           <FormControl >
-          <div className="lob-custom-content-case-detail">
+          <div className="contact-custom-content-case-detail">
              <div>
                 <Typography variant="subtitle1" >First Name</Typography>
                 <TextField
                     id="outlined-multiline-flexible"
-                    sx={{ marginRight: 1, width:160}}
+                    sx={{ marginRight: 1}}
                     onChange={(e)=> setFirstname(e.target.value)}
                     />
             </div>
@@ -149,6 +157,36 @@ const handleCreatNewContact = ()=> {
                     id="outlined-multiline-flexible"
                     sx={{marginRight: 1}}
                     onChange={(e)=> setLastname(e.target.value)}
+                    />
+            </div>
+            <div>
+                <Typography variant="subtitle1" >Category</Typography>
+                <FormControl  sx={{ minWidth: 240 }}>
+                  <Select
+                    value={category}
+                    sx={{marginRight: 1}}
+                    onChange={(e)=> setCategory(e.target.value)}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                     <MenuItem value="">
+                      <em>Select Category</em>
+                    </MenuItem>
+                    <MenuItem value="Family">Family</MenuItem>
+                    <MenuItem value="Service Provider">Service Provider</MenuItem>
+                    <MenuItem value="Community Agency">Community Agency</MenuItem>
+                    <MenuItem value="Indigenous">Indigenous</MenuItem>
+                    <MenuItem value="Friend">Friend</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+            </div>
+            <div>
+                <Typography variant="subtitle1">Age</Typography>
+                <TextField
+                    id="outlined-multiline-flexible"
+                    sx={{marginRight: 1}}
+                    onChange={(e)=> setAge(e.target.value)}
                     />
             </div>
             <div>
@@ -175,20 +213,40 @@ const handleCreatNewContact = ()=> {
                     />
             </div>
             <div>
-                <Typography variant="subtitle1">Date Of Birth</Typography>
-                <TextField type="date"
-                    id="outlined-multiline-flexible" sx={{marginRight: 1}}
-                    onChange={(e)=> setDateofbirth(e.target.value)}/>
+                <Typography variant="subtitle1" >Region</Typography>
+                <FormControl  sx={{ minWidth: 240 }}>
+                  <Select
+                    value={region}
+                    sx={{marginRight: 1}}
+                    onChange={(e)=> handleRegion(e.target.value)}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label' }}
+                  >
+                     <MenuItem value="">
+                      <em>Select Region</em>
+                    </MenuItem>
+                    <MenuItem value="Vancouver Island">Vancouver Island</MenuItem>
+                    <MenuItem value="South Fraser">South Fraser</MenuItem>
+                    <MenuItem value="Vancouver Coastal">Vancouver Coastal</MenuItem>
+                    <MenuItem value="Southern Interior">Southern Interior</MenuItem>
+                    <MenuItem value="North/Thompson Cariboo">North/Thompson Cariboo</MenuItem>
+                    <MenuItem value="Outside of BC">Outside of BC</MenuItem>
+                  </Select>
+                </FormControl>
             </div>
-            <div>
-                <Typography variant="subtitle1">Individual Name</Typography>
+            {showOtherField && <div >
+                <Typography variant="subtitle1">Region</Typography>
                 <TextField
-                    id="outlined-multiline-flexible"sx={{marginRight: 1}}/>
-            </div>
-              <div>
-                <Typography variant="subtitle1">Individual Birthdate</Typography>
-                <TextField type="date"
-                    id="outlined-multiline-flexible"/>
+                    id="outlined-multiline-flexible"
+                    sx={{marginRight: 1}}
+                    onChange={(e)=> setOtherregion(e.target.value)}
+                    />
+            </div>}
+            <div>
+                <Typography variant="subtitle1">City</Typography>
+                <TextField
+                    id="outlined-multiline-flexible" sx={{marginRight: 1}}
+                    onChange={(e)=> setCity(e.target.value)}/>
             </div>
         </div>
         
@@ -207,6 +265,8 @@ const handleCreatNewContact = ()=> {
           </FormControl>
         </div>
       </CustomizedDialog>
+      
+      <ToastContainer />
       <section className="dashboard">
       <div className="header-search">
         <Typography variant="body1" className="title">

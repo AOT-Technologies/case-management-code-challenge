@@ -70,14 +70,14 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    {GENERIC_NAME}
+                    Case Id
                   </Typography>
                 }
               />
             </Grid>
             <Grid
               item
-              xs={1.5}
+              xs={2}
               onClick={() =>
                 setSortSetting({
                   orderBy: "name",
@@ -92,14 +92,14 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Individual
+                    Client Name
                   </Typography>
                 }
               />
             </Grid>
             <Grid
               item
-              xs={1.5}
+              xs={2}
               onClick={() =>
                 setSortSetting({
                   orderBy: "name",
@@ -114,32 +114,19 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Contact
+                    Contact Name
                   </Typography>
                 }
               />
             </Grid>
-            {/* <Grid item xs={1.5}>
-              <ListItemText
-                primary={
-                  <Typography
-                    variant="subtitle1"
-                    className="recent-case-card-style"
-                    sx={{ cursor: "pointer" }}
-                  >
-                    Type
-                  </Typography>
-                }
-              />
-            </Grid> */}
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               <ListItemText
                 primary={
                   <Typography
                     variant="subtitle1"
                     className="recent-case-card-style"
                   >
-                    Description
+                    Issue Type
                   </Typography>
                 }
               />
@@ -152,7 +139,7 @@ const CaseList = React.memo(
                     className="recent-case-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Owner
+                    Next Review Date
                   </Typography>
                 }
               />

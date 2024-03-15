@@ -51,7 +51,7 @@ const RecentCaseCard = (props) => {
               }
             />
           </Grid>
-          <Grid item xs={1.5}>
+          <Grid item xs={2}>
             <ListItemText
               className="caseName-case-list"
               primary={
@@ -64,59 +64,7 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.name}{" "}
-                </Typography>
-              }
-            />
-          </Grid>
-          <Grid item xs={1.5}>
-            <ListItemText
-              className="caseName-case-list"
-              primary={
-                <Typography
-                  variant="body2"
-                  noWrap
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {CaseDetails.name}{" "}
-                </Typography>
-              }
-            />
-          </Grid>
-          {/* <Grid item xs={1.5}>
-            <ListItemText
-              primary={
-                <Typography
-                  variant="body2"
-                  noWrap
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {CaseDetails?.casestype?.displayname}{" "}
-                </Typography>
-              }
-            />
-          </Grid> */}
-          <Grid item xs={3}>
-            <ListItemText
-              primary={
-                <Typography
-                  variant="body2"
-                  noWrap
-                  style={{
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {CaseDetails.desc}{" "}
+                  {CaseDetails.clientname}{" "}
                 </Typography>
               }
             />
@@ -134,7 +82,60 @@ const RecentCaseCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {CaseDetails.name}{" "}
+                  {CaseDetails.contactname}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails.issuetype}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails.nextreviewdate}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={2}>
+            <ListItemText
+              className="caseName-case-list"
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {CaseDetails.status}{" "}
                 </Typography>
               }
             />

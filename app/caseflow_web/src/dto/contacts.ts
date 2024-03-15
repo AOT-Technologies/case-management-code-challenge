@@ -4,7 +4,11 @@ export class Contact {
   lastname: String = '';
   phonenumber: number;
   email: String;
-  dateofbirth: Date;
+  age: number;
+  category: String;
+  region: String;
+  otherregion: String;
+  city: String;
   address: String;
   createdat: Date;
 }

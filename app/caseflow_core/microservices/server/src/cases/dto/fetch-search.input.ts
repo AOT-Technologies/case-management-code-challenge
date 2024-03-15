@@ -11,14 +11,6 @@ export class FetchSearchArgs {
   @IsString()
   searchColumn;
 
-  @Field(() => String)
-  @IsString()
-  fromDate 
-
-  @Field(() => String)  
-  @IsString()
-  toDate 
-
   @Field(() => String)  
   @IsString()
   orderBy 

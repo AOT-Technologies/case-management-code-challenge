@@ -10,15 +10,7 @@ export class FetchSearchArgs {
   @Field(() => String)
   @IsString()
   searchColumn;
-
-  @Field(() => String)
-  @IsString()
-  fromDate;
-
-  @Field(() => String)
-  @IsString()
-  toDate;
-
+  
   @Field(() => Int)
   @IsInt()
   @Min(0)

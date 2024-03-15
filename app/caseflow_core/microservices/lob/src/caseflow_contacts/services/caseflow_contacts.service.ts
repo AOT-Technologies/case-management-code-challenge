@@ -64,51 +64,28 @@ export class CaseflowContactsService {
     searchField,
     searchColumn,
     skip,
-    take,
-    fromDate,
-    toDate,
+    take
   ) {
     try {
-      if (fromDate === '') fromDate = '2000-01-01';
-
       if (searchColumn) {
         if (searchField.length !== 0) {
-          switch (searchColumn) {
-            case 'firstname': {
-              const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
+          const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
                 .createQueryBuilder('table')
-                .where('table.firstname = :firstname', {
-                  firstname: searchField,
+                .where('table.firstname ilike :firstname', {
+                  firstname: `%${searchField}%` ,
+                }).orWhere('table.lastname ilike :lastname', {
+                  lastname: `%${searchField}%` ,
+                }).orWhere('table.phonenumber ilike :phonenumber', {
+                  phonenumber: `%${searchField}%` ,
                 })
-                .andWhere('table.createdAt >= :start_at', {
-                  start_at: fromDate,
-                })
-                .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-
                 .orderBy({ 'table.id': 'DESC' })
                 .take(take)
                 .skip(skip)
                 .getManyAndCount();
               return { CaseflowContacts, totalCount };
-            }
-            default:
-              const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
-                .createQueryBuilder('table')
-                .andWhere('table.createdAt >= :start_at', {
-                  start_at: fromDate,
-                })
-                .andWhere('table.createdAt <= :end_at', { end_at: toDate })
-                .orderBy({ 'table.id': 'DESC' })
-                .take(take)
-                .skip(skip)
-                .getManyAndCount();
-              return { CaseflowContacts, totalCount };
-          }
         } else {
           const [CaseflowContacts, totalCount] = await this.caseflowContactsRepository
             .createQueryBuilder('table')
-            .andWhere('table.createdAt >= :start_at', { start_at: fromDate })
-            .andWhere('table.createdAt <= :end_at', { end_at: toDate })
             .orderBy({ 'table.id': 'DESC' })
             .take(take)
             .skip(skip)

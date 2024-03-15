@@ -28,12 +28,12 @@ const RecentContactCard = (props) => {
       <ListItem button sx={{ paddingInline: 0, paddingBlock: 2 }}>
         <Grid
           container
-          spacing={1}
+          spacing={1.5}
           onClick={() => {
             viewcontactDetails(contact);
           }}
         >
-          <Grid item xs={2}>
+          <Grid item xs={1.5}>
             <ListItemText
               className="caseName-case-list"
               primary={
@@ -51,7 +51,7 @@ const RecentContactCard = (props) => {
               }
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1.5}>
             <ListItemText
               className="caseName-case-list"
               primary={
@@ -69,7 +69,7 @@ const RecentContactCard = (props) => {
               }
             />
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={1}>
             <ListItemText
               primary={
                 <Typography
@@ -81,25 +81,64 @@ const RecentContactCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {contact.phonenumber}{" "}
+                  {contact.category}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {contact.age}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid item xs={1.5}>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {contact.phonenumber}
                 </Typography>
               }
             />
           </Grid>
           <Grid
             item
-            xs={2}
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-start"
+            xs={1.5}
           >
-            <Box>
-              <Typography className="recent-contact-card-status">
-                <div className="recent-contact-card-status-text">
-                  {contact?.email}
-                </div>
-              </Typography>
-            </Box>
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {contact.email}
+                </Typography>
+              }
+            />
           </Grid>
           <Grid item xs={2}>
             <ListItemText
@@ -114,7 +153,47 @@ const RecentContactCard = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {contact.dateofbirth}{" "}
+                  {contact.address}{" "}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid
+            item
+            xs={1}
+          >
+            <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {contact.region}{contact.otherregion && " - " + contact.otherregion}
+                </Typography>
+              }
+            />
+          </Grid>
+          <Grid
+            item
+            xs={1}
+          >
+           <ListItemText
+              primary={
+                <Typography
+                  variant="body2"
+                  noWrap
+                  style={{
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {contact.city}
                 </Typography>
               }
             />

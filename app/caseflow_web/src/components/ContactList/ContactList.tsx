@@ -54,10 +54,10 @@ const ContactList = React.memo(
         </span>
 
         <List>
-          <Grid container spacing={1} sx={{ paddingBottom: 1.5 }}>
+          <Grid container spacing={1.5} sx={{ paddingBottom: 1.5 }}>
             <Grid
               item
-              xs={2}
+              xs={1.5}
               onClick={() =>
                 setSortSetting({
                   orderBy: "firstname",
@@ -79,7 +79,7 @@ const ContactList = React.memo(
               </Grid>
               <Grid
               item
-              xs={2}
+              xs={1.5}
               onClick={() =>
                 setSortSetting({
                   orderBy: "lastName",
@@ -101,7 +101,51 @@ const ContactList = React.memo(
             </Grid>
             <Grid
               item
-              xs={2}
+              xs={1}
+              onClick={() =>
+                setSortSetting({
+                  orderBy: "category",
+                  orderType: !sortSetting.orderType,
+                })
+              }
+            >
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-individual-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    Category
+                  </Typography>
+                }
+              />
+            </Grid>
+            <Grid
+              item
+              xs={1}
+              onClick={() =>
+                setSortSetting({
+                  orderBy: "age",
+                  orderType: !sortSetting.orderType,
+                })
+              }
+            >
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-individual-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    Age
+                  </Typography>
+                }
+              />
+            </Grid>
+            <Grid
+              item
+              xs={1.5}
               onClick={() =>
                 setSortSetting({
                   orderBy: "phoneNumber",
@@ -121,7 +165,7 @@ const ContactList = React.memo(
                 }
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={1.5}>
               <ListItemText
                 primary={
                   <Typography
@@ -134,12 +178,25 @@ const ContactList = React.memo(
                 }
               />
             </Grid>
+            <Grid item xs={2}>
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-contact-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    Address
+                  </Typography>
+                }
+              />
+            </Grid>
             <Grid
               item
-              xs={2}
+              xs={1}
               onClick={() =>
                 setSortSetting({
-                  orderBy: "dateOfBirth",
+                  orderBy: "region",
                   orderType: !sortSetting.orderType,
                 })
               }
@@ -151,11 +208,34 @@ const ContactList = React.memo(
                     className="recent-contact-card-style"
                     sx={{ cursor: "pointer" }}
                   >
-                    Date Of Birth
+                    Region
                   </Typography>
                 }
               />
             </Grid>
+            <Grid
+              item
+              xs={1}
+              onClick={() =>
+                setSortSetting({
+                  orderBy: "city",
+                  orderType: !sortSetting.orderType,
+                })
+              }
+            >
+              <ListItemText
+                primary={
+                  <Typography
+                    variant="subtitle1"
+                    className="recent-contact-card-style"
+                    sx={{ cursor: "pointer" }}
+                  >
+                    City
+                  </Typography>
+                }
+              />
+            </Grid>
+            
           </Grid>
           <Divider sx={{ border: 1, color: "#606060" }} />
           {allRecentContacts.length != 0 ? (

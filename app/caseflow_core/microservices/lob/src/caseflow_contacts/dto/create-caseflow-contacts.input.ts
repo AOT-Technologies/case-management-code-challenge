@@ -14,9 +14,19 @@ export class CreateCaseflowContactsInput {
   lastname?: String;
 
   @Field({ nullable: true })
+  @IsString()
+  @IsNotEmpty()
+  category?: String;
+
+  @Field({ nullable: true })
   @IsNumber()
   @IsNotEmpty()
   phonenumber?: number;
+
+  @Field({ nullable: true })
+  @IsNumber()
+  @IsNotEmpty()
+  age?: number;
 
   @Field({ nullable: true })
   @IsString()
@@ -24,14 +34,22 @@ export class CreateCaseflowContactsInput {
   email?: String;
 
   @Field({ nullable: true })
-  @IsDate()
+  @IsString()
   @IsNotEmpty()
-  dateofbirth?: Date;
+  address?: String;
 
   @Field({ nullable: true })
   @IsString()
   @IsNotEmpty()
-  address?: String;
+  region?: String;
+
+  @Field({ nullable: true })
+  otherregion?: String;
+
+  @Field({ nullable: true })
+  @IsString()
+  @IsNotEmpty()
+  city?: String;
 
   @Field({ nullable: true })
   @IsDate()

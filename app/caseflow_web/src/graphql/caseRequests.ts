@@ -127,8 +127,6 @@ export const SEARCH_CASE_LIST = gql`
     $Take: Int
     $orderBy: String!
     $orderType: String!
-    $fromDate: String!
-    $toDate: String!
   ) {
     Searchcase(
       searchField: $searchField
@@ -137,8 +135,6 @@ export const SEARCH_CASE_LIST = gql`
       take: $Take
       orderBy: $orderBy
       orderType: $orderType
-      fromDate: $fromDate
-      toDate: $toDate
     ) {
       totalCount
       Cases {

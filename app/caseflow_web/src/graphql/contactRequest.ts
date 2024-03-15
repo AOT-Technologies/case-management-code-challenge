@@ -6,9 +6,13 @@ export const FETCH_DATA = gql`
       id
       firstname
       lastname
+      category
+      region
+      otherregion
+      city
       phonenumber
       email
-      dateofbirth
+      age
       address
       createdat
     }
@@ -30,9 +34,13 @@ export const FETCH_ALL = gql`
         id
         firstname
         lastname
+        category
+        region
+        otherregion
+        city
         phonenumber
         email
-        dateofbirth
+        age
         address
         createdat
       }
@@ -46,25 +54,25 @@ export const FETCH_ALL_CONTACTS_DATA = gql`
     $searchColumn: String!
     $Skip: Int
     $Take: Int
-    $fromDate: String!
-    $toDate: String!
   ) {
     searchCaseflowContacts(
       searchField: $searchField
       searchColumn: $searchColumn
       skip: $Skip
       take: $Take
-      fromDate: $fromDate
-      toDate: $toDate
     ) {
       totalCount
       CaseflowContacts {
         id
         firstname
         lastname
+        category
+        region
+        otherregion
+        city
         phonenumber
         email
-        dateofbirth
+        age
         address
         createdat
       }
@@ -78,9 +86,13 @@ export const CREATE_NEW_CASEFLOW_CONTACT = gql`
       id
       firstname
       lastname
+      category
+      region
+      otherregion
+      city
       phonenumber
       email
-      dateofbirth
+      age
       address
       createdat
     }
@@ -91,13 +103,17 @@ export const UPDATE_NEW_CASEFLOW_CONTACT = gql`
   mutation updateCaseflowContacts($updateContactInput: UpdateContactInput!) {
     updateCaseflowContacts(updateContactInput: $updateContactInput) {
       id
-        firstname
-        lastname
-        phonenumber
-        email
-        dateofbirth
-        address
-        createdat
+      firstname
+      lastname
+      category
+      region
+      otherregion
+      city
+      phonenumber
+      email
+      age
+      address
+      createdat
     }
   }
 `;

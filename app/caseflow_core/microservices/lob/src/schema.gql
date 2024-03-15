@@ -22,15 +22,19 @@ directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUM
 
 directive @override(from: String!) on FIELD_DEFINITION
 
-type CaseflowLob {
+type CaseflowContacts {
   id: ID!
-  caseId: Int
-  policyNumber: Int
-  policyEffectiveDate: DateTime
-  policyExpiryDate: DateTime
-  isActive: Boolean
-  sumAssured: Int
-  createdDate: DateTime
+  firstname: String
+  lastname: String
+  category: String
+  age: Float
+  phonenumber: Float
+  email: String
+  address: String
+  region: String
+  otherregion: String
+  city: String
+  createdat: DateTime
 }
 
 """
@@ -38,118 +42,38 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type CaseflowLobResponse {
-  CaseflowLob: [CaseflowLob!]!
-  totalCount: Int!
-}
-
-type CaseflowContacts {
-  id: ID!
-  firstname: String
-  lastname: String
-  phonenumber: Float
-  email: String
-  dateofbirth: DateTime
-  address: String
-  createdat: DateTime
-}
-
 type CaseflowContactsResponse {
   CaseflowContacts: [CaseflowContacts!]!
   totalCount: Int!
 }
 
-type CaseflowIndividuals {
-  id: ID!
-  firstname: String
-  lastname: String
-  phonenumber: Float
-  email: String
-  dateofbirth: DateTime
-  address: String
-  createdat: DateTime
-}
-
-type CaseflowIndividualsResponse {
-  CaseflowIndividuals: [CaseflowIndividuals!]!
-  totalCount: Int!
-}
-
 type Query {
-  getLobById(id: Int!): CaseflowLob!
-  getLobList(skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
-  searchCaseflowLob(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowLobResponse!
   getContactsById(id: Int!): CaseflowContacts!
   getContactsList(skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
-  searchCaseflowContacts(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
-  getIndividualsById(id: Int!): CaseflowIndividuals!
-  getIndividualsList(skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
-  searchCaseflowIndividuals(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, skip: Int! = 0, take: Int! = 25): CaseflowIndividualsResponse!
+  searchCaseflowContacts(searchField: String!, searchColumn: String!, skip: Int! = 0, take: Int! = 25): CaseflowContactsResponse!
 }
 
 type Mutation {
-  createCaseflowLob(createCaseflowLobInput: CreateCaseflowLobInput!): CaseflowLob!
-  updateCaseflowLob(updateCaseflowLobInput: UpdateCaseflowLobInput!): CaseflowLob!
-  removeCaseflowLob(id: Float!): CaseflowLob!
   createCaseflowContacts(CreateCaseflowContactsInput: CreateCaseflowContactsInput!): CaseflowContacts!
   updateCaseflowContacts(updateCaseflowContactsInput: UpdateCaseflowContactsInput!): CaseflowContacts!
   removeCaseflowContacts(id: Float!): CaseflowContacts!
-  createCaseflowIndividuals(CreateCaseflowIndividualsInput: CreateCaseflowIndividualsInput!): CaseflowIndividuals!
-  updateCaseflowIndividuals(updateCaseflowIndividualsInput: UpdateCaseflowIndividualsInput!): CaseflowIndividuals!
-  removeCaseflowIndividuals(id: Float!): CaseflowIndividuals!
-}
-
-input CreateCaseflowLobInput {
-  policyNumber: Int
-  policyEffectiveDate: DateTime
-  policyExpiryDate: DateTime
-  isActive: Boolean
-  sumAssured: Int
-  createdDate: DateTime
-}
-
-input UpdateCaseflowLobInput {
-  id: Int!
-  policyNumber: Int
-  policyEffectiveDate: DateTime
-  policyExpiryDate: DateTime
-  isActive: Boolean
-  sumAssured: Int
-  createdDate: DateTime
 }
 
 input CreateCaseflowContactsInput {
   firstname: String
   lastname: String
+  category: String
   phonenumber: Float
+  age: Float
   email: String
-  dateofbirth: DateTime
   address: String
+  region: String
+  otherregion: String
+  city: String
   createdat: DateTime
 }
 
 input UpdateCaseflowContactsInput {
-  id: Int!
-  firstname: String
-  lastname: String
-  phonenumber: Float
-  email: String
-  dateofbirth: DateTime
-  address: String
-  createdat: DateTime
-}
-
-input CreateCaseflowIndividualsInput {
-  firstname: String
-  lastname: String
-  phonenumber: Float
-  email: String
-  dateofbirth: DateTime
-  address: String
-  createdat: DateTime
-}
-
-input UpdateCaseflowIndividualsInput {
   id: Int!
   firstname: String
   lastname: String

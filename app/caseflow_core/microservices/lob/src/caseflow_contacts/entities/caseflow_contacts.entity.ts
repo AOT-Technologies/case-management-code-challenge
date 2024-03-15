@@ -19,6 +19,14 @@ export class CaseflowContacts {
   lastname: String;
 
   @Column({ nullable: true })
+  @Field( { nullable: true })
+  category: String;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  age?: number;
+
+  @Column({ nullable: true })
   @Field({ nullable: true })
   phonenumber?: number;
 
@@ -28,11 +36,19 @@ export class CaseflowContacts {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  dateofbirth?: Date;
+  address?: String;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  address?: String;
+  region?: String;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  otherregion?: String;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  city?: String;
 
   @Column({ nullable: true })
   @Field({ nullable: true })

@@ -118,9 +118,7 @@ export default function MiniDrawer() {
     window.open(url, "_blank", "noopener,noreferrer");
   }
   const routeToPath = (route) => {
-    if (route.key === 2) {
-      openLinkInNewTab(FORMSFLOW_WEB_URL + "/task");
-    } else if (route.key === 5) {
+    if (route.key === 3) {
       openLinkInNewTab(FORMSFLOW_WEB_URL + "/insights");
     } else {
       navigate(route.path);
@@ -133,12 +131,9 @@ export default function MiniDrawer() {
       text: "Home",
       path: "/private/",
     },
-    { key: 2, text: "Tasks", path: FORMSFLOW_WEB_URL + "/tasks" },
-    { key: 3, text: GENERIC_NAME, path: "/private/cases" },
-    { key: 4, text: "Documents", path: "/private/documents" },
-    { key: 5, text: "Reports", path: FORMSFLOW_WEB_URL + "/insights" },
-    { key: 6, text: "Individual", path: "/private/individuals" },
-    { key: 7, text: "Contacts", path: "/private/contacts" },
+    { key: 2, text: GENERIC_NAME, path: "/private/cases" },
+    { key: 3, text: "Reports", path: FORMSFLOW_WEB_URL + "/insights" },
+    { key: 4, text: "Contacts", path: "/private/contacts" },
   ];
   const { pathname } = useLocation();
   const selectedPathName = pathname.split("/").slice(0, 3).join("/");
@@ -154,33 +149,15 @@ export default function MiniDrawer() {
       case 1:
         return (
           <img
-            alt="Tasksicon"
-            src={require("../../assets/TasksIcon.png")}
-          ></img>
-        );
-      case 2:
-        return (
-          <img
             alt="Casesicon"
             src={require("../../assets/CasesIcon.png")}
           ></img>
         );
-      case 3:
-        return (
-          <img
-            alt="documentsicon"
-            src={require("../../assets/DocumentsIcon.png")}
-          ></img>
-        );
-      case 4:
+      case 2:
         return (
           <img alt="ReportsIcon" src={require("../../assets/ReportsIcon.png")}></img>
         );
-      case 5:
-        return (
-          <img alt="IndividualIcon" src={require("../../assets/AssignedIcon.png")}></img>
-        );
-      case 6:
+      case 3:
         return (
           <img alt="ContactIcon" src={require("../../assets/ContactsIcon.png")}></img>
         );
@@ -214,7 +191,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType("caseFlowProposal"));
+    dispatch(setSelectedCaseType("newCaseflow"));
     setOpenPopup(false);
     navigate("cases/create");
   };

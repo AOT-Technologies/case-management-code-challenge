@@ -46,8 +46,6 @@ export class DocumentsResolver {
       args.orderType,
       args.skip,
       args.take,
-      args.fromDate,
-      args.toDate,
     );
   }
 

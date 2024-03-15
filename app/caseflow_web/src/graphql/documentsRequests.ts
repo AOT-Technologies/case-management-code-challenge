@@ -21,8 +21,6 @@ export const SEARCH_DOCUMENT_LIST = gql`
     $orderType: String!
     $skip: Int!
     $take: Int!
-    $fromDate: String!
-    $toDate: String!
   ) {
     SearchCaseDocument(
       searchField: $searchField
@@ -31,8 +29,6 @@ export const SEARCH_DOCUMENT_LIST = gql`
       orderType: $orderType
       skip: $skip
       take: $take
-      fromDate: $fromDate
-      toDate: $toDate
     ) {
       CaseDocuments {
         id

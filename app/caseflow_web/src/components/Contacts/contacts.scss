@@ -23,3 +23,21 @@
     margin-right: 3vw;
   }
 }
+.contact-custom-content-case-detail {
+  display: grid;
+  grid-template-columns: auto auto;
+  text-align: left;
+  margin-top: 1rem;
+  grid-row-gap: 1rem;
+  margin-bottom: 1rem;
+
+  .contact-record-link-upper-section {
+    width: 1rem;
+    height: 1.6rem;
+  }
+}
+
+.no-details-found {
+  text-align: center;
+  padding-top: 1.5rem;
+}

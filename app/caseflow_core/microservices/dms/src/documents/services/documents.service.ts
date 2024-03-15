@@ -160,11 +160,8 @@ export class DocumentsService {
     orderType: 'ASC' | 'DESC' = 'DESC',
     skip,
     take,
-    fromDate,
-    toDate,
   ) {
     orderBy = 'table.' + orderBy;
-    if (fromDate === '') fromDate = '2000-01-01';
     try {
       if (searchColumn) {
         switch (searchColumn) {
@@ -192,10 +189,6 @@ export class DocumentsService {
                 title: `%${searchField.toLowerCase()}%`,
               })
               .andWhere('table.isdeleted =:isDeleted', { isDeleted: false })
-              .andWhere('table.creationdate > :start_at', {
-                start_at: fromDate,
-              })
-              .andWhere('table.creationdate < :end_at', { end_at: toDate })
               .leftJoinAndSelect('table.versions', 'versions')
               .orderBy({ [orderBy]: orderType })
               .addOrderBy('versions.id', 'DESC')

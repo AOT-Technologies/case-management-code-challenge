@@ -25,7 +25,6 @@ import { v4 as uuidv4 } from "uuid";
 import { publishMessage } from "./NatsServices";
 import { CaseTypes } from "../interfaces/stateInterface";
 import moment from "moment";
-import { toDate } from "date-fns";
 
 export const addCases = async (newCase: Case) => {
   const url = GRAPHQL;
@@ -230,8 +229,6 @@ export const searchCases = async (
   orderBy = "id",
   orderType = true,
   isSearch = false,
-  fromDate,
-  toDate
 ) => {
   const skip = (pno - 1) * 10;
   const url = GRAPHQL;
@@ -247,14 +244,6 @@ export const searchCases = async (
           Take: Number(PAGINATION_TAKE),
           orderBy: orderBy,
           orderType: orderType ? "DESC" : "ASC",
-          fromDate:
-            fromDate && fromDate.$d
-              ? moment(fromDate.$d).format("YYYY-MM-DD")
-              : "",
-          toDate:
-            toDate && toDate.$d
-              ? moment(toDate.$d).format("YYYY-MM-DD")
-              : moment().format("YYYY-MM-DD"),
         },
       },
       null
@@ -279,14 +268,6 @@ export const searchCases = async (
           Take: Number(PAGINATION_TAKE),
           orderBy: orderBy,
           orderType: orderType ? "DESC" : "ASC",
-          fromDate:
-            fromDate && fromDate.$d
-              ? moment(fromDate.$d).format("YYYY-MM-DD")
-              : "",
-          toDate:
-            toDate && toDate.$d
-              ? moment(toDate.$d).format("YYYY-MM-DD")
-              : moment().format("YYYY-MM-DD"),
         },
       },
       null

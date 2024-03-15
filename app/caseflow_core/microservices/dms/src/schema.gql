@@ -69,7 +69,7 @@ type CaseDocuments {
 type Query {
   documents: [CaseDocuments!]!
   getCaseDocument(id: Int!): [CaseDocuments!]!
-  SearchCaseDocument(searchField: String!, searchColumn: String!, toDate: String!, fromDate: String!, skip: Int! = 0, take: Int! = 25, orderBy: String!, orderType: String!): caseDocumentResponse!
+  SearchCaseDocument(searchField: String!, searchColumn: String!, skip: Int! = 0, take: Int! = 25, orderBy: String!, orderType: String!): caseDocumentResponse!
   getAllversions: [Versions!]!
   version(id: Int!): Versions!
 }
@@ -85,7 +85,7 @@ input CreateDocumentInput {
   documentref: String!
   desc: String
   addedbyuserid: Float
-  creationdate: DateTime! = "2024-02-09T19:07:08.733Z"
+  creationdate: DateTime! = "2024-03-14T23:04:02.502Z"
   dmsprovider: Float!
   name: String!
   latestversion: String!
@@ -100,7 +100,7 @@ input UpdateDocumentInput {
   documentref: String!
   desc: String
   addedbyuserid: Float!
-  creationdate: DateTime! = "2024-02-09T19:07:08.734Z"
+  creationdate: DateTime! = "2024-03-14T23:04:02.512Z"
   dmsprovider: Float!
   name: String!
   latestversion: String!

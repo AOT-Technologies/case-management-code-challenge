@@ -119,7 +119,7 @@ type casesResponse {
 type Query {
   getCase(skip: Int = 0, take: Int = 25, id: Int!): Cases!
   case(skip: Int = 0, take: Int = 25): casesResponse!
-  Searchcase(searchField: String!, searchColumn: String!, fromDate: String!, toDate: String!, orderBy: String!, orderType: String!, skip: Int = 0, take: Int = 25): casesResponse!
+  Searchcase(searchField: String!, searchColumn: String!, orderBy: String!, orderType: String!, skip: Int = 0, take: Int = 25): casesResponse!
   fetchRecentCase: [Cases!]!
   getAllCaseHistory: [CaseHistory!]!
   caseHistory(id: Int!): CaseHistory!
@@ -164,7 +164,7 @@ input CreateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-03-12T07:10:07.795Z"
+  creationdate: DateTime = "2024-03-15T02:05:24.070Z"
   completiondate: DateTime
   lastmodificationdate: DateTime
   penduntildate: DateTime
@@ -185,9 +185,9 @@ input UpdateCaseInput {
   statusid: Int!
   typeid: Float
   linkedcases: [Int!]
-  creationdate: DateTime = "2024-03-12T07:10:07.675Z"
+  creationdate: DateTime = "2024-03-15T02:05:24.019Z"
   completiondate: DateTime
-  lastmodificationdate: DateTime = "2024-03-12T07:10:07.675Z"
+  lastmodificationdate: DateTime = "2024-03-15T02:05:24.019Z"
   penduntildate: DateTime
   archivedate: DateTime
   startuserid: Int
@@ -203,7 +203,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2024-03-12T07:10:08.057Z"
+  datetime: DateTime = "2024-03-15T02:05:24.230Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -213,7 +213,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2024-03-12T07:10:08.057Z"
+  datetime: DateTime = "2024-03-15T02:05:24.230Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -268,14 +268,14 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2024-03-12T07:10:10.752Z"
+  creationdate: DateTime = "2024-03-15T02:05:26.898Z"
   userid: Float
   notetext: String
 }
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2024-03-12T07:10:10.752Z"
+  creationdate: DateTime = "2024-03-15T02:05:26.898Z"
   userid: Float
   notetext: String
   id: Int!

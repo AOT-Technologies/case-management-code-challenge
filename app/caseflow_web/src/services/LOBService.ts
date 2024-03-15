@@ -36,8 +36,6 @@ export const getLobData = async (
   number,
   searchField,
   searchColumn,
-  fromDate,
-  toDate
 ) => {
   const url = LOBURL;
   const skip = (number - 1) * Number(PAGINATION_TAKE);
@@ -51,14 +49,6 @@ export const getLobData = async (
         Take: Number(PAGINATION_TAKE),
         SearchField: searchField,
         SearchColumn: searchColumn,
-        fromDate:
-          fromDate && fromDate.$d
-            ? moment(fromDate.$d).format("YYYY-MM-DD")
-            : "",
-        toDate:
-          toDate && toDate.$d
-            ? moment(toDate.$d).format("YYYY-MM-DD")
-            : moment().format("YYYY-MM-DD"),
       },
     },
     null

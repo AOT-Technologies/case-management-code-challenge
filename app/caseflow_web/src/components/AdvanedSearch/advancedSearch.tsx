@@ -37,8 +37,6 @@ export default function AdvancedSearch() {
   const [documentSearch, setDocumentsearch] = useState(false);
   const [caseSearch, setCasesearch] = useState(false);
   const [lobSearch, setLobsearch] = useState(false);
-  const [fromDateForSearch, setFromDateForSearch] = useState(null);
-  const [toDateForSearch, setToDateForSearch] = useState(null);
   const [showDate, setShowDate] = useState(false);
 
   const searchDetails = async () => {
@@ -53,8 +51,6 @@ export default function AdvancedSearch() {
           "id",
           true,
           true,
-          fromDateForSearch,
-          toDateForSearch
         ).then((searchCaseResult) => {
           totalCount = totalCount + searchCaseResult.totalCount;
           searchCaseResult?.Cases.map((element) => {
@@ -74,8 +70,6 @@ export default function AdvancedSearch() {
           "name",
           true,
           true,
-          fromDateForSearch,
-          toDateForSearch
         ).then((searchDocumentResult) => {
           totalCount = totalCount + searchDocumentResult.totalCount;
           searchDocumentResult?.CaseDocuments.map((element) => {
@@ -93,8 +87,6 @@ export default function AdvancedSearch() {
           1,
           searchField,
           "policyNumber",
-          fromDateForSearch,
-          toDateForSearch
         ).then((searchLobResult) => {
           totalCount = totalCount + searchLobResult?.totalCount;
           searchLobResult?.CaseflowLob.map((element) => {
@@ -119,8 +111,6 @@ export default function AdvancedSearch() {
     setAllsearch(true);
     setDocumentsearch(false);
     setLobsearch(false);
-    setFromDateForSearch(null);
-    setToDateForSearch(null);
     setShowDate(false);
   };
 
@@ -129,12 +119,10 @@ export default function AdvancedSearch() {
     console.log(searchresults);
   }, [
     searchField,
-    fromDateForSearch,
     allSearch,
     documentSearch,
     caseSearch,
     lobSearch,
-    toDateForSearch,
   ]);
 
   return (
@@ -224,50 +212,6 @@ export default function AdvancedSearch() {
                 }
                 label="Line of Bussiness"
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={showDate}
-                    onChange={() => {
-                      setShowDate(!showDate);
-                      setFromDateForSearch(null);
-                      setToDateForSearch(null);
-                    }}
-                  />
-                }
-                label="Date"
-              />
-
-              {showDate && (
-                <>
-                  <Box sx={{ mx: 4, width: "10rem" }}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="From Date"
-                        inputFormat="YYYY-MM-DD"
-                        value={fromDateForSearch}
-                        onChange={(newValue) => {
-                          setFromDateForSearch(newValue);
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </Box>
-                  <Box sx={{ width: "10rem" }}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DatePicker
-                        label="To Date"
-                        inputFormat="YYYY-MM-DD"
-                        value={toDateForSearch}
-                        onChange={(newValue) => {
-                          setToDateForSearch(newValue);
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </Box>
-                </>
-              )}
               <Button sx={{ ml: 2 }} onClick={clearFilter} variant="text">
                 Clear
               </Button>

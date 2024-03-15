@@ -830,8 +830,8 @@ const CaseDetails = () => {
             </Button>
           </FormControl>
         </div>
-      </CustomizedDialog>
-      <ToastContainer />
+        </CustomizedDialog>
+        <ToastContainer />
       <PopUpDialogBox
         isOpen={isOpenConfirmationPopup}
         onClose={onCloseConfirmationPopup}

@@ -3,7 +3,6 @@ import Search from "../Search/Search";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../interfaces/stateInterface";
-import PolicyHeader from "../PolicyHeader/PolicyHeader";
 import "./ContactDetails.scss";
 import moment from "moment";
 import { getContactDetails } from "../../services/ContactService";
@@ -48,17 +47,14 @@ const ContactDetail = () => {
           <Typography variant="body1" className="title">
             CaseFlow
           </Typography>
-          <div className="search">
-            <Search
-              setSearchField={() => { } }
-              dropDownArray={[]}
-              setSearchColumn={() => { } } dropDownValues={undefined}            ></Search>
-          </div>
         </div>
       </div>
       <section className="lob-detail-container">
       <Typography variant="subtitle1" className="lob-id">
           Contact: {contact.firstname}  {contact.lastname}
+        </Typography>
+        <Typography variant="subtitle1" className="lob-id">
+          Contact Id: {contact.id}
         </Typography>
       </section>
       <div className="lob-detail-row">
@@ -74,10 +70,28 @@ const ContactDetail = () => {
           </Typography>
         </div>
         <div className="lob-detail-date">
-          <Typography variant="subtitle1">Date Of Birth</Typography>
+          <Typography variant="subtitle1">Category</Typography>
           <Typography>
-            {moment(contact.dateofbirth).format("MMMM Do, YYYY")}
+            {contact.category}
           </Typography>
+        </div>
+        <div className="lob-detail-name">
+          <Typography variant="subtitle1">Age</Typography>
+          <Typography>
+            {contact.age}
+          </Typography>
+        </div>
+        <div className="lob-detail-name">
+          <Typography variant="subtitle1">Phone Number</Typography>
+          <Typography>
+            {contact.phonenumber}
+          </Typography>
+        </div>
+      </div>
+      <div className="lob-detail-row">
+        <div className="lob-detail-name">
+          <Typography variant="subtitle1">Email</Typography>
+          <Typography>{contact.email}</Typography>
         </div>
         <div className="lob-detail-name">
           <Typography variant="subtitle1">Address</Typography>
@@ -85,31 +99,22 @@ const ContactDetail = () => {
             {contact.address}
           </Typography>
         </div>
-       
-      </div>
-      <div className="lob-detail-row">
         <div className="lob-detail-name">
-          <Typography variant="subtitle1">Phone Number</Typography>
+          <Typography variant="subtitle1">Region</Typography>
           <Typography>
-            {contact.phonenumber}
+            {contact.region} {contact.otherregion && " - " + contact.otherregion}
           </Typography>
         </div>
         <div className="lob-detail-name">
-          <Typography variant="subtitle1">Email</Typography>
-          <Typography>{contact.email}</Typography>
+          <Typography variant="subtitle1">City</Typography>
+          <Typography>
+            {contact.city}
+          </Typography>
         </div>
-
-       
         <div className="lob-detail-date">
           <Typography variant="subtitle1">Created At</Typography>
           <Typography>
             {moment(contact.createdat).format("MMMM Do, YYYY")}
-          </Typography>
-        </div>
-        <div className="lob-detail-name">
-          <Typography variant="subtitle1">Id</Typography>
-          <Typography>
-            {contact.id}
           </Typography>
         </div>
       </div>

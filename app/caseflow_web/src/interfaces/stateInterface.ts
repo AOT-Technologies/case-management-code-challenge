@@ -72,8 +72,12 @@ export interface SelectedContacts {
   lastname: string;
   phonenumber: number;
   email: string;
-  dateofbirth: Date;
+  age: number;
+  category: string;
   address: string;
+  region: string;
+  otherregion:string;
+  city: string;
   createdat: Date;
 }
 

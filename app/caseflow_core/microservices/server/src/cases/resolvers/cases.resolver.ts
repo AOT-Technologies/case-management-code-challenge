@@ -67,8 +67,6 @@ export class CasesResolver {
       args.take,
       args.orderBy,
       args.orderType,
-      args.fromDate,
-      args.toDate,
     );
   }
 

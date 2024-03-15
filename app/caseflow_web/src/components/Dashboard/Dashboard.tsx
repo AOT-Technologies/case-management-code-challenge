@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Search from "../Search/Search";
 import "./dashboard.scss";
 import CaseList from "../CaseList/CaseList";
-import MyTask from "../MyTask/MyTask";
 import { fetchRecentCaseList } from "../../services/CaseService";
 import { Typography } from "@mui/material";
 import { GENERIC_NAME } from "../../apiManager/endpoints/config";
@@ -51,9 +50,6 @@ const Dashboard = () => {
           config={caseListProps}
           allRecentCases={recentCases}
         ></CaseList>
-      </div>
-      <div className="my-task">
-        <MyTask></MyTask>
       </div>
     </div>
   );

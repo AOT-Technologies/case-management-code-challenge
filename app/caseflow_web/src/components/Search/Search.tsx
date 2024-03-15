@@ -111,18 +111,6 @@ const Search = ({
                 </Box>
               </CardContent>
               <Divider />
-
-              <div
-                className="advanced-search"
-                onClick={() => {
-                  navigate("/private/advancedSearch");
-                }}
-              >
-                <SearchIcon sx={{ fontSize: "18px" }} />
-                <Typography variant="body2" sx={{ pl: 1 }}>
-                  Advanced Search
-                </Typography>
-              </div>
             </Card>
           </div>
         </div>
