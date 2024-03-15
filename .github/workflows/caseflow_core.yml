@@ -40,7 +40,7 @@ jobs:
 
     - name: Download ECS Task Definition JSON file from S3
       run: |
-          aws s3 cp s3://caseflow-secrets/caseflow_core-revision15.json ./ecs-task-definition/caseflow_core-revision15.json \
+          aws s3 cp s3://caseflow-secrets/caseflow_core-revision16.json ./ecs-task-definition/caseflow_core-revision16.json \
             --region ca-central-1
       
       shell: /usr/bin/bash -e {0}
@@ -54,7 +54,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-          task-definition: ./ecs-task-definition/caseflow_core-revision15.json
+          task-definition: ./ecs-task-definition/caseflow_core-revision16.json
           container-name: caseflow-core
           image: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
       
