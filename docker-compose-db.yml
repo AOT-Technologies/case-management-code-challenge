@@ -1,0 +1,26 @@
+# Author: Sakthi
+version: "3.7"
+
+volumes:
+  postgres:
+
+networks:
+  postgres-network:
+    driver: "bridge"
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: postgres
+    volumes:
+      - ./postgres/keycloak:/data/postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_DB_PASSWORD:-0DhoxLWL5HlS27WjLkUL}
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    networks:
+      - postgres-network

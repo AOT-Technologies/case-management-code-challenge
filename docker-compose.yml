@@ -1,0 +1,121 @@
+# Author: Sakthi
+version: "3.7"
+
+services:
+  caseflow-microservice:
+    container_name: caseflow-microservice
+    build:
+      context: ./app/caseflow_core/microservices/dms
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - KEYCLOCK_CLIENT_ID=${KEYCLOCK_CLIENT_ID}
+      - KEYCLOCK_REALM=${KEYCLOCK_REALM}
+      - KEYCLOCK_AUTH_URL=${KEYCLOCK_AUTH_URL}
+      - KEYCLOCK_SECRET=${KEYCLOCK_SECRET}
+      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
+      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_DB_USERNAME=${POSTGRES_DB_USERNAME}
+      - POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_BUCKET_NAME=${AWS_BUCKET_NAME}
+      - ALFRESCO_REPO_URL=${ALFRESCO_REPO_URL}
+      - SHAREPOINT_CLIENT_ID=${SHAREPOINT_CLIENT_ID}
+      - SHAREPOINT_CLIENT_SECRET=${SHAREPOINT_CLIENT_SECRET}
+      - SHAREPOINT_RESOURCE=${SHAREPOINT_RESOURCE}
+      - SHAREPOINT_UPLOAD_URL=${SHAREPOINT_UPLOAD_URL}
+      - SHAREPOINT_GET_DOCUMENT_URL=${SHAREPOINT_GET_DOCUMENT_URL}
+      - SHAREPOINT_DELETE_DOCUMENT_URL=${SHAREPOINT_DELETE_DOCUMENT_URL}
+      - SHAREPOINT_ACCESS_TOKEN_URL=${SHAREPOINT_ACCESS_TOKEN_URL}
+      - SHAREPOINT_FORM_DIGEST_VALUE_URL=${SHAREPOINT_FORM_DIGEST_VALUE_URL}
+    ports:
+      - "7002:7002"
+      - "7003:7003"
+    tty: true
+
+  case-flow-lob:
+    container_name: case-flow-lob
+    build:
+      context: ./app/caseflow_core/microservices/lob
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - KEYCLOCK_CLIENT_ID=${KEYCLOCK_CLIENT_ID}
+      - KEYCLOCK_REALM=${KEYCLOCK_REALM}
+      - KEYCLOCK_AUTH_URL=${KEYCLOCK_AUTH_URL}
+      - KEYCLOCK_SECRET=${KEYCLOCK_SECRET}
+      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
+      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_DB_USERNAME=${POSTGRES_DB_USERNAME}
+      - POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - caseflow-microservice
+    tty: true
+
+  case-flow-core:
+    container_name: case-flow-core
+    build:
+      context: ./app/caseflow_core/microservices/server
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - KEYCLOCK_CLIENT_ID=${KEYCLOCK_CLIENT_ID}
+      - KEYCLOCK_REALM=${KEYCLOCK_REALM}
+      - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
+      - KEYCLOCK_AUTH_URL=${KEYCLOCK_AUTH_URL}
+      - KEYCLOCK_SECRET=${KEYCLOCK_SECRET}
+      - POSTGRESQL_HOST=${POSTGRESQL_HOST}
+      - POSTGRESQL_PORT=${POSTGRESQL_PORT}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - POSTGRES_DB_USERNAME=${POSTGRES_DB_USERNAME}
+      - POSTGRES_DB_PASSWORD=${POSTGRES_DB_PASSWORD}
+    ports:
+      - "7001:7001"
+    depends_on:
+      - case-flow-lob
+    tty: true
+
+  case-flow-gateway:
+    container_name: case-flow-gateway-service
+    build:
+      context: ./app/caseflow_core/microservices/gateway
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - CASE_SUBGRAPH_URL=${CASE_SUBGRAPH_URL}
+      - DOCUMENT_SUBGRAPH_URL=${DOCUMENT_SUBGRAPH_URL}
+    ports:
+      - "7000:7000"
+    depends_on:
+      - case-flow-core
+    tty: true
+
+  case-flow-web:
+    container_name: case-flow-web
+    build:
+      context: ./app/caseflow_web
+      dockerfile: dev_Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+        - REACT_APP_KEYCLOAK_CLIENT=${REACT_APP_KEYCLOAK_WEB_CLIENTID:-case-flow-web}
+        - REACT_APP_KEYCLOAK_URL_REALM=${REACT_APP_KEYCLOAK_URL_REALM:-caseflow}
+        - REACT_APP_KEYCLOAK_URL=${REACT_APP_KEYCLOAK_URL}
+        - REACT_APP_APPLICATION_NAME=${APPLICATION_NAME:-caseflow.ai}
+        - REACT_APP_CASEFLOW_API_URL=${REACT_APP_CASEFLOW_API_URL}
+        - REACT_APP_CASEFLOW_GRAPHQL_API_URL=${REACT_APP_CASEFLOW_GRAPHQL_API_URL}
+        - REACT_APP_CASEFLOW_DMS=${REACT_APP_CASEFLOW_DMS}
+        - REACT_APP_CASEFLOW_LOB_GRAPHQL_API_URL=${REACT_APP_CASEFLOW_LOB_GRAPHQL_API_URL}
+        - REACT_APP_PAGINATION_TAKE=${REACT_APP_PAGINATION_TAKE}
+        - REACT_APP_FORMSFLOW_URL=${REACT_APP_FORMSFLOW_URL}
+        - REACT_APP_FORMSFLOW_APP_URL=${REACT_APP_FORMSFLOW_APP_URL}
+        - REACT_APP_GENERIC_NAME=${REACT_APP_GENERIC_NAME}
+        - REACT_APP_FORMSFLOW_FORM_URL=${REACT_APP_FORMSFLOW_FORM_URL}
+        - REACT_APP_CASEFLOW_DMS_API_URL=${REACT_APP_CASEFLOW_DMS_API_URL}
+        - REACT_APP_FORMSFLOW_WEB_URL=${REACT_APP_FORMSFLOW_WEB_URL}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - case-flow-gateway
+    tty: true
