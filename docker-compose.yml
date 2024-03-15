@@ -87,7 +87,7 @@ services:
       - CASE_SUBGRAPH_URL=${CASE_SUBGRAPH_URL}
       - DOCUMENT_SUBGRAPH_URL=${DOCUMENT_SUBGRAPH_URL}
     ports:
-      - "9000:9000"
+      - "7000:7000"
     depends_on:
       - case-flow-core
     tty: true
