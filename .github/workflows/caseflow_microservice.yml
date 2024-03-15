@@ -54,7 +54,7 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
                 task-definition: ./ecs-task-definition/caseflow_dms-revision2.json
-                container-name: caseflow-dms
+                container-name: caseflow-microservice
                 image: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
             
     - name: Deploy Amazon ECS Task Definition
