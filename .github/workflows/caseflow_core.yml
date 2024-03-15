@@ -22,8 +22,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
         aws-region: ca-central-1
       
     - name: Login to Amazon ECR
@@ -36,3 +36,27 @@ jobs:
         context: ./app/caseflow_core/microservices/server
         push: true
         tags: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
+
+
+    - name: Download ECS Task Definition JSON file from S3
+      run: |
+          aws s3 cp s3://${{ secrets.AWS_S3_BUCKET}}/caseflow_core-revision15.json  ./ecs-task-definition/caseflow_core-revision15.json \
+            --region ${{ secrets.AWS_REGION }} \
+            --access-key ${{ secrets.AWS_ACCESS_KEY }} \
+            --secret-key ${{ secrets.AWS_SECRET_KEY }}
+      
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+          task-definition: ./ecs-task-definition/caseflow_core-revision15.json
+          container-name: caseflow-microservices
+          image: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
+      
+    - name: Deploy Amazon ECS Task Definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: caseflow-core
+          cluster: caseflow-microservices
+          wait-for-service-stability: true
