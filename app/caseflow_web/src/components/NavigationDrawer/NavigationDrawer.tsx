@@ -39,6 +39,7 @@ import { useState } from "react";
 import CustomizedDialog from "../Dialog/Dialog";
 import { FORMSFLOW_WEB_URL, GENERIC_NAME } from "../../apiManager/endpoints/config";
 
+
 const drawerWidth = 240;
 
 const openedMixin = (theme: any) => ({
@@ -191,7 +192,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType("newCaseflow"));
+    dispatch(setSelectedCaseType("caseflowproposal"));
     setOpenPopup(false);
     navigate("cases/create");
   };
@@ -243,6 +244,7 @@ export default function MiniDrawer() {
               Logout <LogoutIcon style={{ fontSize: "13px" }} />
             </button>
           )}
+          
           {open && (
             <Button
               variant="contained"
