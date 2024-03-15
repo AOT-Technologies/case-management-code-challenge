@@ -42,8 +42,8 @@ jobs:
       run: |
           aws s3 cp s3://${{ secrets.AWS_S3_BUCKET}}/caseflow_core-revision15.json  ./ecs-task-definition/caseflow_core-revision15.json \
             --region ${{ secrets.AWS_REGION }} \
-            --access-key ${{ secrets.AWS_ACCESS_KEY }} \
-            --secret-key ${{ secrets.AWS_SECRET_KEY }}
+            --access-key ${{ secrets.AWS_ACCESS_KEY_ID }} \
+            --secret-key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
