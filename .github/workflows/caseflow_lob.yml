@@ -54,14 +54,14 @@ jobs:
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
               task-definition: ./ecs-task-definition/caseflow_lob-revision5.json
-              container-name: caseflow-lob
+              container-name: caseflow_lob
               image: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
           
     - name: Deploy Amazon ECS Task Definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
               task-definition: ${{ steps.task-def.outputs.task-definition }}
-              service: caseflow-lob
+              service: caseflow_lob
               cluster: caseflow-microservices
               wait-for-service-stability: true
     
