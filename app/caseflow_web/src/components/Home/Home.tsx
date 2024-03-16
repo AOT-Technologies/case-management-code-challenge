@@ -9,7 +9,7 @@ const Home = () =>
   {
     return (
       <div className="grid-container">
-        <div className="menu">
+         <div className="menu">
           <MiniDrawer />
         </div>
         <div className="outlet">
@@ -25,6 +25,7 @@ const Home = () =>
             </Link>
             <text style={{ fontSize: "3vw", fontWeight: "bold", color: 'white', alignSelf:"center", marginLeft:"5%" }}>Case Management</text>
           </div>
+         
           <Loader />
           <Outlet />
         </div>

@@ -52,11 +52,11 @@ const NewCase = () => {
 
   const initialFieldValues = {
     id: 0,
-    name: "",
-    desc: "",
-    statusid: 1,
-    typeid: 1,
-    lobcaseid: 0,
+    clientid: "",
+    contactid: "",
+    issuetype: "",
+    nextreviewdate: new Date,
+    status: "",
   };
 
   const caseList = useSelector((state: State) => state.cases.selectedCase);
@@ -145,11 +145,11 @@ const NewCase = () => {
       const data = await getCaseDetails(matches[0]);
       const InitialSelectedCaseDetails = {
         id: data.id,
-        name: data.name,
-        desc: data.desc,
-        statusid: data.statusid,
-        typeid: data.typeid,
-        lobcaseid: data.lobcaseid,
+        clientid: data.clientid,
+        contactid: data.contactid,
+        issuetype: data.issuetype,
+        nextreviewdate: data.nextreviewdate,
+        status: data.status,
       };
       setValues(InitialSelectedCaseDetails);
       setIsEdit(true);
@@ -360,7 +360,7 @@ const NewCase = () => {
                   LOB Id :
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              {/* <Grid item xs={8}>
                 <Controller
                   name={"LOB Id"}
                   control={control}
@@ -388,7 +388,7 @@ const NewCase = () => {
                     />
                   )}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
             <Grid container spacing={1} sx={{ padding: "2rem 1rem 2rem 1rem" }}>
               <Grid item xs={4}>

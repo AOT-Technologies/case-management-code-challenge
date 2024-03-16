@@ -40,8 +40,4 @@ export class CaseStatuses {
   @Field(() => CaseTypes, { nullable: true })
   @JoinColumn({ name: 'casetypeid' })
   casestype: CaseTypes;
-
-  @OneToMany(() => Cases, (cases) => cases.casestatus)
-  @Field(() => [Cases], { nullable: true })
-  cases: Cases[];
 }

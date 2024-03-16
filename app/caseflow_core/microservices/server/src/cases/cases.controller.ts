@@ -48,7 +48,7 @@ export class CasesController {
         .catch((err) => {
           throw new HttpException(err.response, HttpStatus.NOT_FOUND);
         });
-      if (!field?.isdeleted) {
+      if (!field?.clientid) {
         const caseInput = this.TransformCase.transformUpdateCase(body);
         return this.casesService.updateCase(body.id, caseInput);
       } else return new NotFoundException('No case found to update');
@@ -67,7 +67,7 @@ export class CasesController {
       const field = await this.casesService.findOne(param.id).catch((err) => {
         throw new HttpException(err.response, HttpStatus.NOT_FOUND);
       });
-      if (!field?.isdeleted) return field;
+      if (!field?.clientid) return field;
       throw new HttpException(
         'The requested case is not found',
         HttpStatus.NOT_FOUND,
@@ -88,7 +88,7 @@ export class CasesController {
         .catch((err) => {
           throw new HttpException(err.response, HttpStatus.NOT_FOUND);
         });
-      if (!field?.isdeleted) {
+      if (!field?.clientid) {
         const body = new UpdateCaseInput();
         return this.casesService.updateCase(param.id, body);
       } else return new NotFoundException('No case found to delete');

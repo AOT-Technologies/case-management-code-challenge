@@ -146,12 +146,11 @@ export interface Constants {
 
 export interface CaseStatuses {
   id: number;
-  casetypeid: number;
-  name: string;
-  displayname: string;
-  code: string;
-  lobcaseid: number;
-  formid: string;
+  clientid: string;
+  contactid: string;
+  issuetype: string;
+  nextreviewdate: Date;
+  status: string;
 }
 
 export interface CaseTypes {

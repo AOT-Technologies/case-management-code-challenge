@@ -54,30 +54,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type CaseTypes {
-  id: ID!
-  name: String
-  displayname: String!
-  caseextrafields: Float
-  lobfields: Float
-  code: Float!
-  displaylocations: Float!
-  formid: String
-  searchterm: String
-  casestatus: [CaseStatuses!]
-  cases: [Cases!]
-}
-
-type CaseStatuses {
-  id: ID!
-  casetypeid: Float
-  name: String!
-  displayname: String!
-  code: String!
-  casestype: CaseTypes
-  cases: [Cases!]
-}
-
 type CaseNotes {
   id: ID!
   caseid: Float
@@ -89,31 +65,45 @@ type CaseNotes {
 
 type Cases {
   id: ID!
-  lobid: Int!
-  name: String!
-  desc: String
-  statusid: Float!
-  typeid: Float!
-  linkedcases: [Int!]
+  contactid: String!
+  clientid: String!
+  issuetype: String
+  nextreviewdate: DateTime!
+  status: String!
   creationdate: DateTime!
   completiondate: DateTime
   lastmodificationdate: DateTime
-  penduntildate: DateTime
   archivedate: DateTime
   startuserid: Float
-  currentownerid: Float!
-  lobcaseid: Float
-  involvedparties: [Int!]
-  isdeleted: Boolean!
   casehistory: [CaseHistory!]
-  casestatus: CaseStatuses
-  casestype: CaseTypes
   casenote: [CaseNotes!]
 }
 
 type casesResponse {
   Cases: [Cases!]!
   totalCount: Int!
+}
+
+type CaseTypes {
+  id: ID!
+  name: String
+  displayname: String!
+  caseextrafields: Float
+  lobfields: Float
+  code: Float!
+  displaylocations: Float!
+  formid: String
+  searchterm: String
+  casestatus: [CaseStatuses!]
+}
+
+type CaseStatuses {
+  id: ID!
+  casetypeid: Float
+  name: String!
+  displayname: String!
+  code: String!
+  casestype: CaseTypes
 }
 
 type Query {
@@ -189,7 +179,7 @@ input RemoveCaseArgs {
 }
 
 input CreateCaseHistoryInput {
-  datetime: DateTime = "2024-03-15T13:36:44.333Z"
+  datetime: DateTime = "2024-03-16T01:36:03.793Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]!
@@ -199,7 +189,7 @@ input CreateCaseHistoryInput {
 }
 
 input UpdateCaseHistoryInput {
-  datetime: DateTime = "2024-03-15T13:36:44.333Z"
+  datetime: DateTime = "2024-03-16T01:36:03.793Z"
   outcome: String = "sucess"
   userid: Float
   caseId: [Int!]
@@ -254,14 +244,14 @@ input UpdateCaseTypeInput {
 
 input CreateCaseNoteInput {
   caseid: Float!
-  creationdate: DateTime = "2024-03-15T13:36:45.945Z"
+  creationdate: DateTime = "2024-03-16T01:36:04.291Z"
   userid: Float
   notetext: String
 }
 
 input UpdateCaseNoteInput {
   caseid: Float
-  creationdate: DateTime = "2024-03-15T13:36:45.945Z"
+  creationdate: DateTime = "2024-03-16T01:36:04.291Z"
   userid: Float
   notetext: String
   id: Int!

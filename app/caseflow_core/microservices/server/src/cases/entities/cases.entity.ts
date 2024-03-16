@@ -30,28 +30,24 @@ export class Cases {
   id: number;
 
   @Column({ nullable: true })
-  @Field((type) => Int)
-  lobid: number;
+  @Field()
+  contactid: string;
 
   @Column()
   @Field()
-  name: string;
+  clientid: string;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  desc: string;
+  issuetype: string;
 
   @Column({ nullable: true })
   @Field()
-  statusid: number;
+  nextreviewdate: Date;
 
   @Column({ nullable: true })
   @Field()
-  typeid: number;
-
-  @Column('int', { array: true, nullable: true })
-  @Field((type) => [Int], { nullable: true })
-  linkedcases: number[];
+  status: string;
 
   @Column({ nullable: true })
   @Field()
@@ -67,49 +63,15 @@ export class Cases {
 
   @Column({ nullable: true })
   @Field({ nullable: true })
-  penduntildate: Date;
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
   archivedate: Date;
 
   @Column({ nullable: true })
   @Field({ nullable: true })
   startuserid: number;
 
-  @Column({ nullable: true })
-  @Field()
-  currentownerid: number;
-
-  @Column({ nullable: true })
-  @Field({ nullable: true })
-  lobcaseid: number;
-
-  @Column('int', { array: true, nullable: true })
-  @Field((type) => [Int], { nullable: true })
-  involvedparties: number[];
-
-  @Column({ nullable: true })
-  @Field()
-  isdeleted: boolean;
-
-  // @OneToMany(()=>CaseHistory,casehistory =>casehistory.caseid)
-  // @Field(type=>[CaseHistory],{nullable:true})
-  // casehistory?:CaseHistory[];
-
   @OneToMany(() => CaseHistory, (casehistory) => casehistory.case)
   @Field(() => [CaseHistory], { nullable: true })
   casehistory: CaseHistory[];
-
-  @ManyToOne(() => CaseStatuses, (casestatus) => casestatus.cases)
-  @Field(() => CaseStatuses, { nullable: true })
-  @JoinColumn({ name: 'statusid' })
-  casestatus: CaseStatuses;
-
-  @ManyToOne(() => CaseTypes, (casetype) => casetype.cases)
-  @Field(() => CaseTypes, { nullable: true })
-  @JoinColumn({ name: 'typeid' })
-  casestype: CaseTypes;
 
   @OneToMany(() => CaseNotes, (casenote) => casenote.case)
   @Field(() => [CaseNotes], { nullable: true })

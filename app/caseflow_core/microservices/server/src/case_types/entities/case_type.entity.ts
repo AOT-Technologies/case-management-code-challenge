@@ -49,7 +49,4 @@ export class CaseTypes {
   @Field(() => [CaseStatuses], { nullable: true })
   casestatus: CaseStatuses[];
 
-  @OneToMany(() => Cases, (cases) => cases.typeid)
-  @Field(() => [Cases], { nullable: true })
-  cases: Cases[];
 }

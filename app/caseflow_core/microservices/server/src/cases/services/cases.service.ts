@@ -54,9 +54,6 @@ export class CasesService {
     try {
       return this.caseRepository.find({
         take: 10,
-        where: {
-          isdeleted:false
-        },
         order: {
           id: 'DESC',
         },
@@ -94,8 +91,7 @@ export class CasesService {
     if (id) {
       const value = await this.caseRepository.findOne({
         where: {
-          id: id,
-          isdeleted:false
+          id: id
         },
         
         relations: [
@@ -153,7 +149,7 @@ export class CasesService {
       },
     });
     if (caseData) {
-      return await this.caseRepository.update(id,{...caseData,isdeleted:true})
+      return await this.caseRepository.update(id,{...caseData})
       .then(data=>{return {status: "success"}})
       .catch(err=> err)
     }
