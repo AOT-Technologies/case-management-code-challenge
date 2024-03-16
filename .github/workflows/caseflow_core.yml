@@ -1,4 +1,4 @@
-name: Caseflow Core
+name: Caseflow Cores
 on:
   workflow_dispatch:
     inputs:
