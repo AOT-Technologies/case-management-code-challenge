@@ -39,7 +39,7 @@ jobs:
 
     - name: Download ECS Task Definition JSON file from S3
       run: |
-                aws s3 cp s3://caseflow-secrets/caseflow_lob-revision6.json ./ecs-task-definition/caseflow_lob-revision6.json \
+                aws s3 cp s3://caseflow-secrets/caseflow_lob-revision7.json ./ecs-task-definition/caseflow_lob-revision7.json \
                   --region ca-central-1
             
       shell: /usr/bin/bash -e {0}
@@ -53,7 +53,7 @@ jobs:
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
-                task-definition: ./ecs-task-definition/caseflow_lob-revision6.json
+                task-definition: ./ecs-task-definition/caseflow_lob-revision7.json
                 container-name: caseflow_lob
                 image: ${{ github.event.inputs.ecr }}/${{ github.event.inputs.reponame }}:${{ github.event.inputs.version }}
             
