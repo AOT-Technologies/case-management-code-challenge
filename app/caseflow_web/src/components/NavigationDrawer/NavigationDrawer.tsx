@@ -192,7 +192,7 @@ export default function MiniDrawer() {
   };
   const selectForm = () => {
     dispatch(resetSelectedCase());
-    dispatch(setSelectedCaseType("caseflowproposal"));
+    dispatch(setSelectedCaseType("newcaseflowproposal"));
     setOpenPopup(false);
     navigate("cases/create");
   };
