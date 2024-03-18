@@ -36,6 +36,7 @@ const keyCloakOptionsProvider = {
     KeycloakConnectModule.registerAsync(keyCloakOptionsProvider),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
+      cors: "*",
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
       introspection: true,
