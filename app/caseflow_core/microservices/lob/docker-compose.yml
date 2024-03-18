@@ -23,5 +23,5 @@ services:
 
 
     ports:
-      - "8002:8002"
+      - "8000:8000"
     tty: true
